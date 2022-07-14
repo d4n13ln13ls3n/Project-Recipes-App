@@ -1,12 +1,13 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
-    <div className="meals">
-      <h1>Iniciando o projeto App de Receitas</h1>
-    </div>
+    <Switch>
+      <Route exact path="/" component={ Login } />
+    </Switch>
   );
 }
 
