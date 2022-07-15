@@ -1,5 +1,5 @@
 import { createContext } from 'react';
 
-const recipesAppContext = createContext();
+const recipesAppContext = createContext({ email: '', password: '' });
 
 export default recipesAppContext;
