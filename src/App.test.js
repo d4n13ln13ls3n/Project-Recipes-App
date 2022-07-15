@@ -1,9 +1,45 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from './App';
+import renderWithRouter from './renderWithRouter';
+// import Login from './pages/Login';
+// import { waitFor } from "@testing-library/react";
+// import { useLocation } from 'react-router-dom';
 
-test('Testa o componente Login e suas funcionalidades', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/TRYBE/i);
-  expect(linkElement).toBeInTheDocument();
+describe('Testa o componente Login e suas funcionalidades', () => {
+
+  it('Verifica se o botão ENTER está funcionando corretamente', async () => {
+  const { history } = renderWithRouter(<App />)
+  const emailInput = screen.getByTestId('email-input')
+  expect(emailInput).toBeInTheDocument()
+  
+  // waitFor(() => expect(emailInput).toBeInTheDocument()); 
+  
+  const passwordInput = screen.getByTestId('password-input')
+  expect(passwordInput).toBeInTheDocument()
+   
+  userEvent.type(emailInput, 'email@email.com' )
+  userEvent.type(passwordInput, '1234567' )
+  // history.push('/foods')
+  const loginButton = screen.getByTestId('login-submit-btn')
+  expect(loginButton).toBeInTheDocument()
+  userEvent.click(loginButton)
+  await screen.findByText(/Teste Foods/i)
+  const { pathname } = history.location;
+
+
+  console.log(loginButton)
+
+  expect(pathname).toBe('/foods')
+  
+
+
+  // expect(screen.getByText(/teste Foods/i)).toBeInTheDocument()
+
+  // const {pathname} = useLocation(); 
+  // expect(pathname).toBe('/foods')
+
+  })
+
 });
