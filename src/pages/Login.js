@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router';
-import RecipesAppContext from '../hook/RecipesAppContext';
+import RecipesAppContext from '../hooks/RecipesAppContext';
 
 function Login() {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
