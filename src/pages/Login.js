@@ -4,7 +4,7 @@ import RecipesAppContext from '../hooks/RecipesAppContext';
 
 function Login() {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
-  const { login, setLogin } = useContext(RecipesAppContext);
+  const { setLogin } = useContext(RecipesAppContext);
 
   const handleChange = ({ target: { name, value } }) => {
     setLoginData((oldState) => ({ ...oldState, [name]: value }));
