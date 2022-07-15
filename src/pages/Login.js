@@ -14,7 +14,7 @@ function Login() {
 
   const handleSubmit = () => {
     setLogin(loginData);
-    localStorage.setItem('user', JSON.stringify({ email: login.email }));
+    localStorage.setItem('user', JSON.stringify({ email: loginData.email }));
     localStorage.setItem('mealsToken', JSON.stringify(1));
     localStorage.setItem('cocktailsToken', JSON.stringify(1));
 
