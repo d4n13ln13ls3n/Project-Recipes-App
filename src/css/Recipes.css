@@ -1,0 +1,20 @@
+* {
+  box-sizing: border-box;
+}
+
+.foodContainer, .drinkContainer {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+}
+
+.foodCard, .drinkCard {
+  margin: 1rem;
+  width: 8rem;
+}
+
+.foodImage, .drinkImage {
+  width: inherit;
+}
