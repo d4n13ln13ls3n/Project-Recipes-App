@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router';
-import RecipesAppContext from '../hooks/RecipesAppContext';
+import RecipesAppContext from '../context/RecipesAppContext';
 
-function Login() {
+export default function Login() {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const { setLogin } = useContext(RecipesAppContext);
 
   const handleChange = ({ target: { name, value } }) => {
-    setLoginData((oldState) => ({ ...oldState, [name]: value }));
+    setLoginData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const history = useHistory();
@@ -23,9 +23,11 @@ function Login() {
 
   const isActiveButton = () => {
     const minLength = 7;
-    const emailRegex = /^([a-z\d.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/; // regex baseado na solução vista nesse vídeo: https://www.youtube.com/watch?v=QxjAOSUQjP0
-    return loginData
-      .password.length >= minLength && emailRegex.test(loginData.email);
+    // regex baseado na solução vista nesse vídeo: https://www.youtube.com/watch?v=QxjAOSUQjP0
+    const emailRegex = /^([a-z\d.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
+    return (
+      loginData.password.length >= minLength && emailRegex.test(loginData.email)
+    );
   };
 
   return (
@@ -57,5 +59,3 @@ function Login() {
     </form>
   );
 }
-
-export default Login;
