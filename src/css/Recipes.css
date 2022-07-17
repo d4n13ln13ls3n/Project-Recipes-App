@@ -1,8 +1,4 @@
-* {
-  box-sizing: border-box;
-}
-
-.foodContainer, .drinkContainer {
+.recipeContainer {
   align-items: end;
   display: flex;
   flex-wrap: wrap;
@@ -10,11 +6,11 @@
   text-align: center;
 }
 
-.foodCard, .drinkCard {
+.recipeCard {
   margin: 1rem;
   width: 8rem;
 }
 
-.foodImage, .drinkImage {
+.recipeImage {
   width: inherit;
 }
