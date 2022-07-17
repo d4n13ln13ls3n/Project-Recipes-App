@@ -1,5 +1,5 @@
 import React from 'react';
-import loadingGif from '../images/loading.gif';
+import loadingGif from '../images/loading.svg';
 import '../css/Loading.css';
 
 // esse é o nosso componente de loading, será executado quando a requisição estiver em promise
