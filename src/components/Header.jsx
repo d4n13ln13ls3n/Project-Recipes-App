@@ -18,6 +18,23 @@ function Header() {
     }
   };
 
+  const titleSearchBar = () => {
+    switch (history.location.pathname) {
+    case '/foods':
+      return <h1 data-testid="page-title">Foods</h1>;
+    case '/drinks':
+      return <h1 data-testid="page-title">Drinks</h1>;
+    case '/profile':
+      return <h1 data-testid="page-title">Profile</h1>;
+    case '/done-recipes':
+      return <h1 data-testid="page-title">Done Recipes</h1>;
+    case '/favorite-recipes':
+      return <h1 data-testid="page-title">Favorite Recipes</h1>;
+    default:
+      return null;
+    }
+  };
+
   return (
     <header>
       <Link to="/profile">
@@ -27,23 +44,19 @@ function Header() {
           src={ profileIcon }
         />
       </Link>
-      <h1
-        data-testid="page-title"
-      >
-        { history.location.pathname === '/foods'
-          ? 'Foods' : 'Drinks'}
-      </h1>
-      { (pathname !== '/profile'
-      || pathname !== '/done-recipes'
-      || pathname !== '/favorite-recipes')
-        && <button
-          type="button"
-          data-testid="search-top-btn"
-          onClick={ searchBar }
-        >
-          <img src={ searchIcon } alt="search" />
-          {' '}
-        </button>}
+      <div>
+        { titleSearchBar() }
+      </div>
+      { (pathname === '/foods' || pathname === '/drinks')
+        && (
+          <button
+            type="button"
+            data-testid="search-top-btn"
+            onClick={ searchBar }
+          >
+            <img src={ searchIcon } alt="search" />
+            {' '}
+          </button>)}
       { showSearchBar && <SearchBar />}
     </header>
   );
