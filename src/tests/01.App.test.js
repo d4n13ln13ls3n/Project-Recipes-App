@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from './App';
-import renderWithRouter from './renderWithRouter';
+import App from '../App';
+import renderWithRouter from '../utils/renderWithRouter';
 // import Login from './pages/Login';
 // import { waitFor } from "@testing-library/react";
 // import { useLocation } from 'react-router-dom';
