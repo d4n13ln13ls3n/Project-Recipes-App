@@ -1,8 +1,11 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import React, { useEffect, useState } from 'react';
 import searchIcon from '../images/searchIcon.svg';
+import { useHistory } from 'react-router';
 
 function SearchBar() {
+  const history = useHistory();
+  const { location: { pathname } } = history;
   const [searchInput, setSearchInput] = useState('');
   const [radioSelected, setRadioSelected] = useState('');
   const [filteredMeals, setFilteredMeals] = useState([]);
@@ -18,32 +21,60 @@ function SearchBar() {
   const filteredSearch = async () => {
     console.log('testando a função');
 
-    if (radioSelected === 'ingredient') {
-      console.log('entrou no primeiro if');
-      const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`;
-      const response = await fetch(INGREDIENT_API);
-      const data = await response.json();
-      setFilteredMeals((prevState) => ({ ...prevState, data }));
-      console.log('data:', data);
-      console.log('data.meals:', data.meals[0]);
+    if (pathname === '/foods') {
+      if (radioSelected === 'ingredient') {
+        console.log('entrou no primeiro if');
+        const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`;
+        const response = await fetch(INGREDIENT_API);
+        const data = await response.json();
+        setFilteredMeals((prevState) => ({ ...prevState, data }));
+        return filteredMeals;
+      }
+      if (radioSelected === 'name') {
+        const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`;
+        const response = await fetch(INGREDIENT_API);
+        const data = await response.json();
+        setFilteredMeals(data);
+        return filteredMeals;
+      }
+      if (radioSelected === 'first-letter' && searchInput.length === 1) {
+        const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchInput}`;
+        const response = await fetch(INGREDIENT_API);
+        const data = await response.json();
+        setFilteredMeals(data);
+        return filteredMeals;
+      }
+      global.alert('Your search must have only 1 (one) character');
       return filteredMeals;
+      }
     }
-    if (radioSelected === 'name') {
-      const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`;
-      const response = await fetch(INGREDIENT_API);
-      const data = await response.json();
-      setFilteredMeals(data);
+    if (pathname === '/drinks') {
+      if (radioSelected === 'ingredient') {
+        console.log('entrou no primeiro if');
+        const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${searchInput}`;
+        const response = await fetch(INGREDIENT_API);
+        const data = await response.json();
+        setFilteredMeals((prevState) => ({ ...prevState, data }));
+        return filteredMeals;
+      }
+      if (radioSelected === 'name') {
+        const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchInput}`;
+        const response = await fetch(INGREDIENT_API);
+        const data = await response.json();
+        setFilteredMeals(data);
+        return filteredMeals;
+      }
+      if (radioSelected === 'first-letter' && searchInput.length === 1) {
+        const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${searchInput}`;
+        const response = await fetch(INGREDIENT_API);
+        const data = await response.json();
+        setFilteredMeals(data);
+        return filteredMeals;
+      }
+      global.alert('Your search must have only 1 (one) character');
       return filteredMeals;
+      }
     }
-    if (radioSelected === 'first-letter' && searchInput.length === 1) {
-      const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchInput}`;
-      const response = await fetch(INGREDIENT_API);
-      const data = await response.json();
-      setFilteredMeals(data);
-      return filteredMeals;
-    }
-    global.alert('Your search must have only 1 (one) character');
-    return filteredMeals;
   };
 
   useEffect(() => { // mostra resultado depois de atualizar
