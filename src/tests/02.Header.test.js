@@ -13,12 +13,20 @@ describe('Testa o componente Header', () => {
     expect(history.location.pathname).toBe('/profile');
   });
 
-  test('2. Se o ícone de perfil aparece na tela', () => { //  testar posteriormente se renderiza a barra de busca
-    const { history } = renderWithRouter(<Header />);
+  test('2. Se o ícone(botão) de busca aparece na tela', () => { //  testar posteriormente se renderiza a barra de busca
+    const { history } = renderWithRouter(<App />);
+    
+    history.push('/foods')
+
     const searchIcon = screen.getByTestId('search-top-btn');
     expect(searchIcon).toBeInTheDocument();
-    userEvent.click(searchIcon);
+
+    history.push('/drinks')
+
+    const searchIcon2 = screen.getByTestId('search-top-btn');
+    expect(searchIcon2).toBeInTheDocument();
   });
+
   test('3. Se os títulos aparecem de forma correta', async () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
@@ -30,18 +38,50 @@ describe('Testa o componente Header', () => {
 
     const h1Drinks = await screen.findByText(/drinks/i);
     expect(h1Drinks).toBeInTheDocument();
+
+    history.push('/profile');
+
+    const h1Profile = await screen.findByText(/profile/i);
+    expect(h1Profile).toBeInTheDocument();
+
+    history.push('/done-recipes');
+
+    const h1DoneRecipes = await screen.findByText(/done recipes/i);
+    expect(h1DoneRecipes).toBeInTheDocument();
+
+    history.push('/favorite-recipes');
+
+    const h1FavoriteRecipes = await screen.findByText(/favorite recipes/i);
+    expect(h1FavoriteRecipes).toBeInTheDocument();
   });
-  // test('4. Se o ícone de busca aparece somente nos locais corretos', async () => {
-  //   const { history } = renderWithRouter(<App />);
-  //   const searchIcon = await screen.findByTestId('search-top-btn');
+  
+   test('4. Se o ícone de busca aparece somente nos locais corretos', async () => {
+     const { history } = renderWithRouter(<App />);
 
-  //   history.push('/profile');
-  //   expect(searchIcon).not.toBeInTheDocument();
+     history.push('/foods');
+     const searchIcon1 = await screen.findByTestId('search-top-btn');
+     expect(searchIcon1).toBeInTheDocument()
 
-  //   history.push('/done-recipes');
-  //   expect(searchIcon).not.toBeInTheDocument();
+     history.push('/drinks');
+     const searchIcon2 = await screen.findByTestId('search-top-btn');
+     expect(searchIcon2).toBeInTheDocument()
 
-  //   history.push('/favorite-recipes');
-  //   expect(searchIcon).not.toBeInTheDocument();
-  // });
+   });
+
+  test('5. Se a barra de busca aparece e/ou desaparece ao clicar no botão', async () => {
+    const { history } = renderWithRouter(<App />);
+
+    history.push('/foods')
+
+    const button = await screen.findByRole('button')
+    expect(button).toBeInTheDocument();
+
+    userEvent.click(button)
+    const searchInput = await screen.findByTestId('search-input')
+    expect(searchInput).toBeInTheDocument();
+
+    userEvent.click(button)
+    expect(searchInput).not.toBeInTheDocument();
+  });
+
 });
