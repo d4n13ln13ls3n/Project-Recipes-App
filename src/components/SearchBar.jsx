@@ -1,31 +1,54 @@
-import React, { useState } from 'react';
+/* eslint-disable sonarjs/no-duplicate-string */
+import React, { useEffect, useState } from 'react';
 import searchIcon from '../images/searchIcon.svg';
 
 function SearchBar() {
   const [searchInput, setSearchInput] = useState('');
   const [radioSelected, setRadioSelected] = useState('');
+  const [filteredMeals, setFilteredMeals] = useState([]);
 
-  const onInputChange = ({ event: { value } }) => {
+  const onInputChange = ({ target: { value } }) => {
     setSearchInput(value);
   };
-
-  // const filterItems = async () => {
-  //   if (searchInput.length === 0) {
-  //     return 'O campo de busca não pode estar vazio';
-  //   } else {
-
-  //   }
-  // }
-
-  // const handleRadioChange = ({ target: { value } }) => {
-  //   if (target.checked) {
-  //     setRadioSelected(value);
-  //   }
-  // };
 
   const handleRadioChange = ({ target: { value } }) => {
     setRadioSelected(value);
   };
+
+  const filteredSearch = async () => {
+    console.log('testando a função');
+
+    if (radioSelected === 'ingredient') {
+      console.log('entrou no primeiro if');
+      const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`;
+      const response = await fetch(INGREDIENT_API);
+      const data = await response.json();
+      setFilteredMeals((prevState) => ({ ...prevState, data }));
+      console.log('data:', data);
+      console.log('data.meals:', data.meals[0]);
+      return filteredMeals;
+    }
+    if (radioSelected === 'name') {
+      const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`;
+      const response = await fetch(INGREDIENT_API);
+      const data = await response.json();
+      setFilteredMeals(data);
+      return filteredMeals;
+    }
+    if (radioSelected === 'first-letter' && searchInput.length === 1) {
+      const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchInput}`;
+      const response = await fetch(INGREDIENT_API);
+      const data = await response.json();
+      setFilteredMeals(data);
+      return filteredMeals;
+    }
+    global.alert('Your search must have only 1 (one) character');
+    return filteredMeals;
+  };
+
+  useEffect(() => { // mostra resultado depois de atualizar
+    console.log('filtered meals:', filteredMeals);
+  }, [filteredMeals]);
 
   return (
     <div>
@@ -41,6 +64,7 @@ function SearchBar() {
         <button
           type="button"
           data-testid="exec-search-btn"
+          onClick={ () => filteredSearch() }
         >
           <img src={ searchIcon } alt="search" />
         </button>
