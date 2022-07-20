@@ -38,7 +38,8 @@ function Header() {
   return (
     <header>
       <Link to="/profile">
-        <img
+        <button
+          type="button"
           data-testid="profile-top-btn"
           alt="profile"
           src={ profileIcon }
@@ -53,9 +54,10 @@ function Header() {
             type="button"
             data-testid="search-top-btn"
             onClick={ searchBar }
+            src={ searchIcon }
           >
-            <img src={ searchIcon } alt="search" />
-            {' '}
+            {/* <img  alt="search" />
+            {' '} */}
           </button>)}
       { showSearchBar && <SearchBar />}
     </header>
