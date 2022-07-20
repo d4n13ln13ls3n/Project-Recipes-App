@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import searchIcon from '../images/searchIcon.svg';
 
@@ -76,9 +76,9 @@ function SearchBar() {
     filterDrinks();
   };
 
-  useEffect(() => { // mostra resultado depois de atualizar
-    console.log('filtered meals:', filteredMeals);
-  }, [filteredMeals]);
+  // useEffect(() => { // mostra resultado depois de atualizar
+  //   console.log('filtered meals:', filteredMeals);
+  // }, [filteredMeals]);
 
   return (
     <div>
