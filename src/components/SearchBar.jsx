@@ -10,6 +10,7 @@ function SearchBar() {
   const [searchInput, setSearchInput] = useState('');
   const [radioSelected, setRadioSelected] = useState('');
   const [filteredMeals, setFilteredMeals] = useState([]);
+  const [filteredDrinks, setFilteredDrinks] = useState([]);
 
   const onInputChange = ({ target: { value } }) => {
     setSearchInput(value);
@@ -19,14 +20,21 @@ function SearchBar() {
     setRadioSelected(value);
   };
 
-  const checkLength = (data) => {
+  const checkLengthMeals = (data) => {
     console.log('chamei a func');
     console.log('verifica estado', data);
-    if (data.meals.length === 1) {
+    if (data.meals.length === 1 && pathname === '/foods') {
       console.log(pathname);
       history.push(`${pathname}/${data.meals[0].idMeal}`);
     }
   };
+
+  const checkLengthDrinks = (data) => {
+    if (data.drinks.length === 1 && pathname === '/drinks') {
+      console.log(pathname);
+      history.push(`${pathname}/${data.drinks[0].idDrink}`);
+    }
+  }
 
   const filterDrinks = async () => {
     if (pathname === '/drinks') {
@@ -34,25 +42,30 @@ function SearchBar() {
         const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${searchInput}`;
         const response = await fetch(INGREDIENT_API);
         const data = await response.json();
-        setFilteredMeals((prevState) => ({ ...prevState, data }));
-        return filteredMeals;
+        console.log('data from drinks:', data);
+        checkLengthDrinks(data);
+        setFilteredDrinks((prevState) => ({ ...prevState, data }));
+        return filteredDrinks;
       }
       if (radioSelected === 'name') {
         const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchInput}`;
         const response = await fetch(INGREDIENT_API);
         const data = await response.json();
-        setFilteredMeals((prevState) => ({ ...prevState, data }));
-        return filteredMeals;
+        checkLengthDrinks(data);
+        setFilteredDrinks((prevState) => ({ ...prevState, data }));
+        return filteredDrinks;
       }
       if (radioSelected === 'first-letter' && searchInput.length === 1) {
         const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${searchInput}`;
         const response = await fetch(INGREDIENT_API);
         const data = await response.json();
-        setFilteredMeals((prevState) => ({ ...prevState, data }));
-        return filteredMeals;
+        console.log('drinks filtered by first letter:', data);
+        checkLengthDrinks(data);
+        setFilteredDrinks((prevState) => ({ ...prevState, data }));
+        return filteredDrinks;
       }
       global.alert('Your search must have only 1 (one) character');
-      return filteredMeals;
+      return filteredDrinks;
     }
   };
 
@@ -64,7 +77,7 @@ function SearchBar() {
         const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`;
         const response = await fetch(INGREDIENT_API);
         const data = await response.json();
-        console.log(data);
+        checkLengthMeals(data);
         setFilteredMeals((prevState) => ({ ...prevState, data }));
         return filteredMeals;
       }
@@ -73,20 +86,20 @@ function SearchBar() {
         const response = await fetch(INGREDIENT_API);
         const data = await response.json();
         setFilteredMeals((prevState) => ({ ...prevState, data }));
-        checkLength(data);
+        checkLengthMeals(data);
         return filteredMeals;
       }
       if (radioSelected === 'first-letter' && searchInput.length === 1) {
         const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchInput}`;
         const response = await fetch(INGREDIENT_API);
         const data = await response.json();
+        checkLengthMeals(data);
         setFilteredMeals((prevState) => ({ ...prevState, data }));
         return filteredMeals;
       }
       global.alert('Your search must have only 1 (one) character');
       return filteredMeals;
     }
-    checkLength();
     filterDrinks();
   };
 
