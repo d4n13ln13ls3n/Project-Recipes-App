@@ -117,21 +117,25 @@ describe('Testa o componente SearchBar', () => {
 
     const showSearchBarButton = await screen.findByTestId('search-top-btn');
     userEvent.click(showSearchBarButton);
-    
-    debug()
 
     const searchButton = await screen.findByTestId('exec-search-btn');
     const firstLetterRadio = await screen.findByTestId('first-letter-search-radio')
     const textSearchInput = await screen.findByTestId('search-input');
+    
+    const ingredientRadio = await screen.findByTestId('ingredient-search-radio')
+    userEvent.click(ingredientRadio);
+    userEvent.type(textSearchInput, 'apple');
+    userEvent.click(searchButton);
+
+    const nameRadio = await screen.findByTestId('name-search-radio')
+    userEvent.click(nameRadio);
+    userEvent.type(textSearchInput, 'steak');
+    userEvent.click(searchButton);
 
     userEvent.click(firstLetterRadio);
     userEvent.type(textSearchInput, 'chicken');
     userEvent.click(searchButton);
 
-    // const textAlert = await screen.findByText('Your search must have only 1 (one) character');
-    // expect(textAlert).toBeInTheDocument();
-    // const api = 'https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken'
-    // expect(global.fetch).toHaveBeenCalledWith(api)
 
     await waitFor(() => {
       expect(global.alert).toHaveBeenCalledTimes(1)
@@ -142,28 +146,31 @@ describe('Testa o componente SearchBar', () => {
 
   test('5. Testa  ...', async () => {
     jest.spyOn(window, 'alert').mockImplementation(() => {});
-    // global.fetch = async () => ({
-    //   json: async () => (apiResponseMock),
-    // });
 
     const { history, debug } = renderWithRouter(<App />);
     
-    history.push('/foods')
+    history.push('/drinks')
 
     const showSearchBarButton = await screen.findByTestId('search-top-btn');
     userEvent.click(showSearchBarButton);
     
-    debug()
-
     const searchButton = await screen.findByTestId('exec-search-btn');
-    const firstLetterRadio = await screen.findByTestId('ingredient-search-radio')
+    const nameRadio = await screen.findByTestId('name-search-radio')
     const textSearchInput = await screen.findByTestId('search-input');
 
-    userEvent.click(firstLetterRadio);
-    userEvent.type(textSearchInput, 'chicken');
+    userEvent.click(nameRadio);
+    userEvent.type(textSearchInput, 'beer');
     userEvent.click(searchButton);
 
+    const ingredientRadio = await screen.findByTestId('ingredient-search-radio')
+    userEvent.click(ingredientRadio);
+    userEvent.type(textSearchInput, 'apple');
+    userEvent.click(searchButton);
 
-    
+    const firstLetterRadio = await screen.findByTestId('first-letter-search-radio')
+    userEvent.click(firstLetterRadio);
+    userEvent.type(textSearchInput, 'a');
+    userEvent.click(searchButton);
+
   });
 })

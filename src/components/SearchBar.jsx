@@ -1,6 +1,7 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
+// import { Redirect } from 'react-router-dom';
 import searchIcon from '../images/searchIcon.svg';
 
 function SearchBar() {
@@ -16,6 +17,15 @@ function SearchBar() {
 
   const handleRadioChange = ({ target: { value } }) => {
     setRadioSelected(value);
+  };
+
+  const checkLength = (data) => {
+    console.log('chamei a func');
+    console.log('verifica estado', data);
+    if (data.meals.length === 1) {
+      console.log(pathname);
+      history.push(`${pathname}/${data.meals[0].idMeal}`);
+    }
   };
 
   const filterDrinks = async () => {
@@ -47,6 +57,8 @@ function SearchBar() {
   };
 
   const filteredSearch = async () => {
+    // console.log(filteredMeals.data.meals[0].idMeal);
+    // console.log('verifica o length', filteredMeals.data.meals.length);
     if (pathname === '/foods') {
       if (radioSelected === 'ingredient') {
         const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`;
@@ -61,6 +73,7 @@ function SearchBar() {
         const response = await fetch(INGREDIENT_API);
         const data = await response.json();
         setFilteredMeals((prevState) => ({ ...prevState, data }));
+        checkLength(data);
         return filteredMeals;
       }
       if (radioSelected === 'first-letter' && searchInput.length === 1) {
@@ -73,6 +86,7 @@ function SearchBar() {
       global.alert('Your search must have only 1 (one) character');
       return filteredMeals;
     }
+    checkLength();
     filterDrinks();
   };
 
