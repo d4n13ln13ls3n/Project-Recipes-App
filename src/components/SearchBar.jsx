@@ -35,12 +35,15 @@ function SearchBar() {
       history.push(`${pathname}/${data.drinks[0].idDrink}`);
     }
   };
+// <<<<<<< main-group-18-requisito-14
 
-  const getJsonData = async (INGREDIENT_API) => {
-    const response = await fetch(INGREDIENT_API);
-    const data = await response.json();
-    return data;
-  };
+//   const getJsonData = async (INGREDIENT_API) => {
+//     const response = await fetch(INGREDIENT_API);
+//     const data = await response.json();
+//     return data;
+//   };
+// =======
+// >>>>>>> main-group-18
 
   const filterDrinks = async () => {
     if (pathname === '/drinks') {
