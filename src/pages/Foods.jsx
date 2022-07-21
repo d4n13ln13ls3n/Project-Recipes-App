@@ -8,6 +8,7 @@ export default function Foods() {
 
   return (
     <div>
+      {console.log(filteredFoods)}
       <Header />
       <MapRecipes
         filteredRecipe={ filteredFoods }

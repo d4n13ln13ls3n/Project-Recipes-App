@@ -35,13 +35,21 @@ function SearchBar() {
       history.push(`${pathname}/${data.drinks[0].idDrink}`);
     }
   };
+// <<<<<<< main-group-18-requisito-14
+
+//   const getJsonData = async (INGREDIENT_API) => {
+//     const response = await fetch(INGREDIENT_API);
+//     const data = await response.json();
+//     return data;
+//   };
+// =======
+// >>>>>>> main-group-18
 
   const filterDrinks = async () => {
     if (pathname === '/drinks') {
       if (radioSelected === 'ingredient') {
         const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${searchInput}`;
-        const response = await fetch(INGREDIENT_API);
-        const data = await response.json();
+        getJsonData(INGREDIENT_API);
         console.log('data from drinks:', data);
         checkLengthDrinks(data);
         setFilteredDrinks((prevState) => ({ ...prevState, data }));
@@ -49,16 +57,14 @@ function SearchBar() {
       }
       if (radioSelected === 'name') {
         const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchInput}`;
-        const response = await fetch(INGREDIENT_API);
-        const data = await response.json();
+        getJsonData(INGREDIENT_API);
         checkLengthDrinks(data);
         setFilteredDrinks((prevState) => ({ ...prevState, data }));
         return filteredDrinks;
       }
       if (radioSelected === 'first-letter' && searchInput.length === 1) {
         const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${searchInput}`;
-        const response = await fetch(INGREDIENT_API);
-        const data = await response.json();
+        getJsonData(INGREDIENT_API);
         console.log('drinks filtered by first letter:', data);
         checkLengthDrinks(data);
         setFilteredDrinks((prevState) => ({ ...prevState, data }));
@@ -68,6 +74,20 @@ function SearchBar() {
       return filteredDrinks;
     }
   };
+  const showDetails = () => {
+    console.log('filtered meals inside showDetails:', filteredMeals);
+    if (filteredMeals.data.meals.length > 1 || filteredDrinks.data.drinks.length > 1) {
+      setRenderItems(true);
+    }
+  };
+
+  const updateFilteredMeals = () => {
+    checkLengthMeals(data);
+    setFilteredMeals((prevState) => ({ ...prevState, data }));
+    return filteredMeals;
+  };
+
+  const noMatchMessage = 'Sorry, we haven\'t found any recipes for these filters.';
 
   const filteredSearch = async () => {
     // console.log(filteredMeals.data.meals[0].idMeal);
@@ -75,32 +95,33 @@ function SearchBar() {
     if (pathname === '/foods') {
       if (radioSelected === 'ingredient') {
         const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`;
-        const response = await fetch(INGREDIENT_API);
-        const data = await response.json();
-        checkLengthMeals(data);
-        setFilteredMeals((prevState) => ({ ...prevState, data }));
-        return filteredMeals;
+        getJsonData(INGREDIENT_API);
+        if (data) {
+          updateFilteredMeals();
+        }
+        global.alert(noMatchMessage);
       }
       if (radioSelected === 'name') {
         const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`;
-        const response = await fetch(INGREDIENT_API);
-        const data = await response.json();
-        setFilteredMeals((prevState) => ({ ...prevState, data }));
-        checkLengthMeals(data);
-        return filteredMeals;
+        getJsonData(INGREDIENT_API);
+        if (data) {
+          updateFilteredMeals();
+        }
+        global.alert(noMatchMessage);
       }
       if (radioSelected === 'first-letter' && searchInput.length === 1) {
         const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchInput}`;
-        const response = await fetch(INGREDIENT_API);
-        const data = await response.json();
-        checkLengthMeals(data);
-        setFilteredMeals((prevState) => ({ ...prevState, data }));
-        return filteredMeals;
+        getJsonData(INGREDIENT_API);
+        if (data) {
+          updateFilteredMeals();
+        }
+        global.alert(noMatchMessage);
       }
       global.alert('Your search must have only 1 (one) character');
       return filteredMeals;
     }
     filterDrinks();
+    showDetails();
   };
 
   useEffect(() => { // mostra resultado depois de atualizar
