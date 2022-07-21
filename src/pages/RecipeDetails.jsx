@@ -19,16 +19,29 @@ function RecipeDetails() {
     const response = await fetch(receita);
     const data = await response.json();
     const routeFilter = await data.drinks[0];
-    console.log(routeFilter);
+    // console.log(routeFilter);
     return routeFilter;
   };
 
-  apiRecipe();
+  const recipe = apiRecipe();
 
   return (
-    <div>
-      <h1>Recipe Details em Construção</h1>
-    </div>
+    <dir>
+      { recipe.strMeal !== undefined
+    && (
+      <div>
+        <img
+          data-testid="recipe-photo"
+          className="recipeCard"
+          src="https://www.themealdb.com/images/media/meals/58oia61564916529.jpg"
+          alt={ recipe.strMeal }
+        />
+        <h2 data-testid="recipe-title">{ recipe.strMeal }</h2>
+        <p data-testid="recipe-category">{ recipe.strCategory }</p>
+        {/* <p data-testid="${index}-ingredient-name-and-measure">{  }</p> */}
+        <p data-testid="instructions">{ recipe.strInstructions }</p>
+      </div>)}
+    </dir>
   );
 }
 
