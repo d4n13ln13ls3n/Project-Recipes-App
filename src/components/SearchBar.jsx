@@ -34,7 +34,7 @@ function SearchBar() {
       console.log(pathname);
       history.push(`${pathname}/${data.drinks[0].idDrink}`);
     }
-  }
+  };
 
   const filterDrinks = async () => {
     if (pathname === '/drinks') {
