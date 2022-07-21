@@ -7,6 +7,7 @@ import useFilter from '../hooks/useFilter';
 export default function RecipesAppProvider({ children }) {
   const [login, setLogin] = useState({ email: '', password: '' });
   const [filters, setFilters] = useState({ recipesLimit: 12 });
+  const [renderItems, setRenderItems] = useState(false);
 
   // hooks costumizados, o useFoodsAndDrinks ele faz a requisição das comidas e bebidas
   // e o useFilter ele filtra as comidas e bebidas basiadas na seleção do usuário
@@ -22,6 +23,8 @@ export default function RecipesAppProvider({ children }) {
     filteredDrinks,
     filters,
     setFilters,
+    renderItems,
+    setRenderItems,
   };
 
   return (

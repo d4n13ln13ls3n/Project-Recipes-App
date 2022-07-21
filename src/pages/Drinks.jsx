@@ -8,7 +8,7 @@ export default function Drinks() {
 
   return (
     <div>
-      <Header />
+      <Header filteredDrinks={ filteredDrinks }/>
       <MapRecipes
         filteredRecipe={ filteredDrinks }
         id="strDrink"
