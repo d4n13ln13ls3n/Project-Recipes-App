@@ -1,25 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
-import { useHistory } from 'react-router';
+import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import SearchBar from './SearchBar';
 
-function Header() {
+export default function Header({ filteredRecipe }) {
+  const [isVisible, setIsVisible] = useState(false);
   const history = useHistory();
-  const { location: { pathname } } = history;
-  const [showSearchBar, setShowSearchBar] = useState(false);
-
-  const searchBar = () => {
-    if (!showSearchBar) {
-      setShowSearchBar(true);
-    } else {
-      setShowSearchBar(false);
-    }
-  };
 
   const titleSearchBar = () => {
-    switch (history.location.pathname) {
+    const { location: { pathname } } = history;
+    switch (pathname) {
     case '/foods':
       return <h1 data-testid="page-title">Foods</h1>;
     case '/drinks':
@@ -37,31 +28,33 @@ function Header() {
 
   return (
     <header>
+      { titleSearchBar() }
       <Link to="/profile">
         <button
           type="button"
           data-testid="profile-top-btn"
-          alt="profile"
-          src={ profileIcon }
-        />
+        >
+          <img src={ profileIcon } alt="profile" />
+          Profile
+        </button>
       </Link>
-      <div>
-        { titleSearchBar() }
-      </div>
-      { (pathname === '/foods' || pathname === '/drinks')
-        && (
-          <button
-            type="button"
-            data-testid="search-top-btn"
-            onClick={ searchBar }
-            src={ searchIcon }
-          >
-            {/* <img  alt="search" />
-            {' '} */}
-          </button>)}
-      { showSearchBar && <SearchBar />}
+      <button
+        type="button"
+        data-testid="search-top-btn"
+        onClick={ () => setIsVisible((prevState) => !prevState) }
+      >
+        <img src={ searchIcon } alt="search" />
+        Open Search
+      </button>
+      { isVisible && (
+        <SearchBar
+          filteredRecipe={ filteredRecipe }
+        />
+      )}
     </header>
   );
 }
 
-export default Header;
+// Header.propTypes = {
+//   history: PropTypes
+// }

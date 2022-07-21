@@ -1,15 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import recipesAppContext from '../context/RecipesAppContext';
 import Header from '../components/Header';
 import MapRecipes from '../components/MapRecipes';
+import fetchFood from '../services/fetchFood';
 
 export default function Foods() {
-  const { filteredFoods } = useContext(recipesAppContext);
+  const {
+    filteredFoods, setFoods, savedFilters, setEndPoints,
+  } = useContext(recipesAppContext);
+
+  const endpoint1 = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${savedFilters.filterBySearch}`;
+  const endpoint2 = `https://www.themealdb.com/api/json/v1/1/search.php?s=${savedFilters.filterBySearch}`;
+  const endpoint3 = `https://www.themealdb.com/api/json/v1/1/search.php?f=${savedFilters.filterBySearch}`;
+
+  useEffect(() => {
+    console.log(savedFilters);
+    setEndPoints({ endpoint1, endpoint2, endpoint3 });
+  }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      setFoods(await fetchFood([]));
+    }
+    fetchData();
+  }, []);
 
   return (
     <div>
-      {console.log(filteredFoods)}
-      <Header />
+      <Header
+        filteredRecipe={ filteredFoods }
+      />
       <MapRecipes
         filteredRecipe={ filteredFoods }
         id="idMeal"

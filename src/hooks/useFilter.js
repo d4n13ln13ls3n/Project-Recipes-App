@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 
-export default function useFilter(foods, drinks, { recipesLimit }) {
-  const [filteredMeals, setFilteredMeals] = useState([]);
+export default function useFilter(foods, drinks, { recipesLimit }, savedFilters) {
+  const [filteredFoods, setFilteredFoods] = useState([]);
   const [filteredDrinks, setFilteredDrinks] = useState([]);
 
   useEffect(() => {
-    setFilteredMeals(foods.slice(0, recipesLimit));
-    setFilteredMeals(drinks.slice(0, recipesLimit));
+    setFilteredFoods(foods.slice(0, recipesLimit));
+    setFilteredDrinks(drinks.slice(0, recipesLimit));
   }, [foods, drinks, recipesLimit]);
 
-  return [filteredMeals, filteredDrinks];
+  return [filteredFoods, filteredDrinks, setFilteredFoods];
 }
