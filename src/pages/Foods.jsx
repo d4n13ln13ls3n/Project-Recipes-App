@@ -6,7 +6,11 @@ import fetchFood from '../services/fetchFood';
 
 export default function Foods() {
   const {
-    filteredFoods, setFoods, savedFilters, setEndPoints,
+    filteredFoods,
+    setFilteredFoods,
+    setFoods,
+    savedFilters,
+    setEndPoints,
   } = useContext(recipesAppContext);
 
   const endpoint1 = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${savedFilters.filterBySearch}`;
@@ -14,9 +18,10 @@ export default function Foods() {
   const endpoint3 = `https://www.themealdb.com/api/json/v1/1/search.php?f=${savedFilters.filterBySearch}`;
 
   useEffect(() => {
-    console.log(savedFilters);
-    setEndPoints({ endpoint1, endpoint2, endpoint3 });
-  }, []);
+    if (savedFilters.filterBySearch) {
+      setEndPoints({ endpoint1, endpoint2, endpoint3 });
+    }
+  }, [savedFilters]);
 
   useEffect(() => {
     async function fetchData() {
@@ -27,9 +32,7 @@ export default function Foods() {
 
   return (
     <div>
-      <Header
-        filteredRecipe={ filteredFoods }
-      />
+      <Header setFilteredRecipe={ setFilteredFoods } />
       <MapRecipes
         filteredRecipe={ filteredFoods }
         id="idMeal"
