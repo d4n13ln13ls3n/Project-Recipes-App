@@ -3,6 +3,7 @@ import recipesAppContext from '../context/RecipesAppContext';
 import Header from '../components/Header';
 import MapRecipes from '../components/MapRecipes';
 import fetchDrink from '../services/fetchDrink';
+import Footer from '../components/Footer';
 
 export default function Drinks() {
   const {
@@ -39,6 +40,7 @@ export default function Drinks() {
         name="strDrink"
         thumb="strDrinkThumb"
       />
+      <Footer />
     </div>
   );
 }
