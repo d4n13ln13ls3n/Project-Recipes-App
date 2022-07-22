@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function useFilter(foods, drinks, { recipesLimit }, savedFilters) {
+export default function useFilter(foods, drinks, { recipesLimit }) {
   const [filteredFoods, setFilteredFoods] = useState([]);
   const [filteredDrinks, setFilteredDrinks] = useState([]);
 
@@ -9,5 +9,5 @@ export default function useFilter(foods, drinks, { recipesLimit }, savedFilters)
     setFilteredDrinks(drinks.slice(0, recipesLimit));
   }, [foods, drinks, recipesLimit]);
 
-  return [filteredFoods, filteredDrinks, setFilteredFoods];
+  return [filteredFoods, filteredDrinks, setFilteredFoods, setFilteredDrinks];
 }

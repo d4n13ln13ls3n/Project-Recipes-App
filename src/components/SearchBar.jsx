@@ -1,20 +1,25 @@
-import React, { useState, useContext } from 'react';
-// import { useHistory } from 'react-router';
+import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import recipesAppContext from '../context/RecipesAppContext';
 import searchIcon from '../images/searchIcon.svg';
 
-function SearchBar({ filteredRecipe }) {
-  // const history = useHistory();
-  // const { location: { pathname } } = history;
+export default function SearchBar({ setFilteredRecipe }) {
+  const history = useHistory();
+  const { location: { pathname } } = history;
 
   const initialSelectedFilters = {
     filterBySearch: '',
     filterByRadio: '',
   };
 
+  // salva nesse componente de maneira local os filtros selecionados
   const [selectedFilters, setSelectedFilters] = useState(initialSelectedFilters);
 
-  const { setFilteredFoods, setSavedFilters, endPoints } = useContext(recipesAppContext);
+  const {
+    savedFilters,
+    setSavedFilters,
+    endPoints,
+  } = useContext(recipesAppContext);
 
   const handleInputChange = ({ target: { value } }) => {
     setSelectedFilters((prevState) => ({ ...prevState, filterBySearch: value }));
@@ -30,80 +35,66 @@ function SearchBar({ filteredRecipe }) {
     }
   };
 
-  // const checkLengthDrinks = (data) => {
-  //   if (data.drinks.length === 1 && pathname === '/drinks') {
-  //     history.push(`${pathname}/${data.drinks[0].idDrink}`);
-  //   }
-  // };
-
-  // const filterDrinks = async () => {
-  //   if (pathname === '/drinks') {
-  //     if (radioSelected === 'ingredient') {
-  //       const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${searchInput}`;
-  //       getJsonData(INGREDIENT_API);
-  //       checkLengthDrinks(data);
-  //       setFilteredDrinks((prevState) => ({ ...prevState, data }));
-  //       return filteredDrinks;
-  //     }
-  //     if (radioSelected === 'name') {
-  //       const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchInput}`;
-  //       getJsonData(INGREDIENT_API);
-  //       checkLengthDrinks(data);
-  //       setFilteredDrinks((prevState) => ({ ...prevState, data }));
-  //       return filteredDrinks;
-  //     }
-  //     if (radioSelected === 'first-letter' && searchInput.length === 1) {
-  //       const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${searchInput}`;
-  //       getJsonData(INGREDIENT_API);
-  //       checkLengthDrinks(data);
-  //       setFilteredDrinks((prevState) => ({ ...prevState, data }));
-  //       return filteredDrinks;
-  //     }
-  //     global.alert('Your search must have only 1 (one) character');
-  //     return filteredDrinks;
-  //   }
-  // };
-
-  const updateFilteredFoods = (data) => {
-    setFilteredFoods(data);
+  const checkLengthDrinks = (data) => {
+    if (data.drinks.length === 1 && pathname === '/drinks') {
+      history.push(`${pathname}/${data.drinks[0].idDrink}`);
+    }
   };
 
   const noMatchMessage = 'Sorry, we haven\'t found any recipes for these filters.';
 
-  const getJsonData = async (INGREDIENT_API) => {
-    const response = await fetch(INGREDIENT_API);
-    const { meals } = await response.json();
-    if (!meals) {
-      global.alert(noMatchMessage);
-      return null;
+  const getJsonData = async (endpoint) => {
+    const maxLimit = 12;
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    if (data.meals) {
+      checkLengthMeals(data);
+      return data.meals.filter((_, index) => index < maxLimit);
     }
-    return meals;
+    if (data.drinks) {
+      checkLengthDrinks(data);
+      return data.drinks.filter((_, index) => index < maxLimit);
+    }
+    return null;
   };
 
   const handleSearch = async () => {
-    // está passando o valor do state local para o state do context (global)
+    // está passando o valor do state local (selectedFilters) para o state do context (global)
     setSavedFilters(selectedFilters);
-    if (selectedFilters.filterByRadio === 'ingredient') {
-      const meals = await getJsonData(endPoints.endpoint1);
-      if (meals) {
-        updateFilteredFoods(meals);
-      }
-    }
-    if (selectedFilters.filterByRadio === 'name') {
-      const meals = await getJsonData(endPoints.endpoint2);
-      if (meals) {
-        updateFilteredFoods(meals);
-      }
-    }
-    if (selectedFilters.filterByRadio === 'first-letter' && selectedFilters.filterBySearch.length === 1) {
-      const meals = await getJsonData(endPoints.endpoint3);
-      if (meals) {
-        updateFilteredFoods(meals);
-      }
-    } else {
-      global.alert('Your search must have only 1 (one) character');
-    }
   };
+
+  useEffect(() => {
+    const callBack = async () => {
+      if (savedFilters.filterBySearch) {
+        const { filterByRadio, filterBySearch } = selectedFilters;
+        if (filterByRadio === 'ingredient') {
+          const data = await getJsonData(endPoints.endpoint1);
+          if (!data) {
+            return global.alert(noMatchMessage);
+          }
+          return setFilteredRecipe(data);
+        }
+
+        if (filterByRadio === 'name') {
+          const data = await getJsonData(endPoints.endpoint2);
+          if (!data) {
+            return global.alert(noMatchMessage);
+          }
+          return setFilteredRecipe(data);
+        }
+
+        if (filterByRadio === 'first-letter' && filterBySearch.length === 1) {
+          const data = await getJsonData(endPoints.endpoint3);
+          if (!data) {
+            return global.alert(noMatchMessage);
+          }
+          return setFilteredRecipe(data);
+        }
+        global.alert('Your search must have only 1 (one) character');
+      }
+    };
+    callBack();
+  }, [endPoints]);
 
   return (
     <div>
@@ -162,4 +153,6 @@ function SearchBar({ filteredRecipe }) {
   );
 }
 
-export default SearchBar;
+SearchBar.propTypes = {
+  setFilteredRecipe: PropTypes.func.isRequired,
+};

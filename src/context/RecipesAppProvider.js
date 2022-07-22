@@ -9,17 +9,25 @@ export default function RecipesAppProvider({ children }) {
   const [filters, setFilters] = useState({ recipesLimit: 12 });
   const [renderItems, setRenderItems] = useState(false);
 
-  const [savedFilters, setSavedFilters] = useState({});
+  const [savedFilters, setSavedFilters] = useState({
+    filterBySearch: '',
+    filterByRadio: '',
+  });
 
   // hooks costumizados, o useFoodsAndDrinks ele faz a requisição das comidas e bebidas
   // e o useFilter ele filtra as comidas e bebidas basiadas na seleção do usuário
   const [foods, drinks, setFoods, setDrinks] = useFoodsAndDrinks();
-  const [filteredFoods, filteredDrinks, setFilteredFoods] = useFilter(foods, drinks, filters, savedFilters);
+  const [
+    filteredFoods,
+    filteredDrinks,
+    setFilteredFoods,
+    setFilteredDrinks,
+  ] = useFilter(foods, drinks, filters, savedFilters);
 
   const [endPoints, setEndPoints] = useState({
-    endpoint1: 'https://www.themealdb.com/api/json/v1/1/filter.php?i=',
-    endpoint2: 'https://www.themealdb.com/api/json/v1/1/search.php?s=',
-    endpoint3: 'https://www.themealdb.com/api/json/v1/1/search.php?f=',
+    endpoint1: '',
+    endpoint2: '',
+    endpoint3: '',
   });
 
   const context = {
@@ -38,6 +46,7 @@ export default function RecipesAppProvider({ children }) {
     savedFilters,
     setSavedFilters,
     setFilteredFoods,
+    setFilteredDrinks,
     endPoints,
     setEndPoints,
   };
