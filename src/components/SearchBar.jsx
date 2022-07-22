@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router';
+import PropTypes from 'prop-types';
 import recipesAppContext from '../context/RecipesAppContext';
 import searchIcon from '../images/searchIcon.svg';
 

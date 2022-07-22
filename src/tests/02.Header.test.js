@@ -4,10 +4,10 @@ import { screen } from '@testing-library/react';
 import renderWithRouter from '../utils/renderWithRouter';
 import userEvent from '@testing-library/user-event';
 
-describe('Testa o componente Header', () => {
-  test('1. Se o ícone de perfil aparece na tela e redireciona para a página profile', () => {
+describe.only('Testa o componente Header', () => {
+  test('1. Se o ícone de perfil aparece na tela e redireciona para a página profile', async () => {
     const { history } = renderWithRouter(<Header />);
-    const profileIcon = screen.getByTestId('profile-top-btn');
+    const profileIcon = await screen.getByTestId('profile-top-btn');
     expect(profileIcon).toBeInTheDocument();
     userEvent.click(profileIcon);
     expect(history.location.pathname).toBe('/profile');
@@ -41,17 +41,17 @@ describe('Testa o componente Header', () => {
 
     history.push('/profile');
 
-    const h1Profile = await screen.findByText(/profile/i);
+    const h1Profile = await screen.findByRole('heading', { level: 1});
     expect(h1Profile).toBeInTheDocument();
 
     history.push('/done-recipes');
 
-    const h1DoneRecipes = await screen.findByText(/done recipes/i);
+    const h1DoneRecipes = await screen.findByRole('heading', { level: 1});
     expect(h1DoneRecipes).toBeInTheDocument();
 
     history.push('/favorite-recipes');
 
-    const h1FavoriteRecipes = await screen.findByText(/favorite recipes/i);
+    const h1FavoriteRecipes = await screen.findByRole('heading', { level: 1});
     expect(h1FavoriteRecipes).toBeInTheDocument();
   });
   
@@ -73,7 +73,7 @@ describe('Testa o componente Header', () => {
 
     history.push('/foods')
 
-    const button = await screen.findByRole('button')
+    const button = await screen.findByTestId('search-top-btn')
     expect(button).toBeInTheDocument();
 
     userEvent.click(button)
