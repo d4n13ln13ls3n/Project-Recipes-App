@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import PropTypes from 'prop-types';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import SearchBar from './SearchBar';
 
-export default function Header({ filteredRecipe }) {
+export default function Header({ setFilteredRecipe, page }) {
   const [isVisible, setIsVisible] = useState(false);
   const history = useHistory();
 
@@ -33,28 +34,37 @@ export default function Header({ filteredRecipe }) {
         <button
           type="button"
           data-testid="profile-top-btn"
+          src={ profileIcon }
         >
-          <img src={ profileIcon } alt="profile" />
+          {/* <img src={ profileIcon } alt="profile" /> */}
           Profile
         </button>
       </Link>
-      <button
-        type="button"
-        data-testid="search-top-btn"
-        onClick={ () => setIsVisible((prevState) => !prevState) }
-      >
-        <img src={ searchIcon } alt="search" />
-        Open Search
-      </button>
-      { isVisible && (
-        <SearchBar
-          filteredRecipe={ filteredRecipe }
-        />
-      )}
+      {
+        page !== 'profile' && page !== 'doneRecipes' && page !== 'favoriteRecipes' && (
+          <button
+            type="button"
+            data-testid="search-top-btn"
+            onClick={ () => setIsVisible((prevState) => !prevState) }
+            src={ searchIcon }
+          >
+            {/* <img src={ searchIcon } alt="search" /> */}
+            Open Search
+          </button>
+        )
+      }
+      {
+        isVisible && (
+          <SearchBar
+            setFilteredRecipe={ setFilteredRecipe }
+          />
+        )
+      }
     </header>
   );
 }
 
-// Header.propTypes = {
-//   history: PropTypes
-// }
+Header.propTypes = {
+  setFilteredRecipe: PropTypes.func.isRequired,
+  page: PropTypes.string.isRequired,
+};
