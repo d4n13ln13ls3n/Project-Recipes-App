@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Filters from './Filters';
+// import Filters from './Filters';
 import Loading from './Loading';
 import '../css/Recipes.css';
 
 export default function MapRecipes({ filteredRecipe, id, name, thumb }) {
   return (
     <div>
-      <Filters />
+      {/* <Filters /> */}
       <section className="recipeContainer">
         {
           filteredRecipe.length ? (
