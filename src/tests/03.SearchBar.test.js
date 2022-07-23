@@ -173,4 +173,53 @@ describe('Testa o componente SearchBar', () => {
     userEvent.click(searchButton);
 
   });
-})
+
+  test('6. Se o usuário é redirecionado para a página de detalhes de um prato ao fazer uma busca que retorne somente um resultado', async () => {
+    const { history } = renderWithRouter(<App />);
+
+    history.push('/foods')
+
+    const button = await screen.findByTestId('search-top-btn')
+    expect(button).toBeInTheDocument();
+
+    userEvent.click(button);
+    const searchInput = await screen.findByTestId('search-input');
+    expect(searchInput).toBeInTheDocument();
+
+    userEvent.type(searchInput, 'Big Mac');
+
+    const nameRadio = await screen.findByTestId('name-search-radio');
+    userEvent.click(nameRadio);
+    
+    const searchButton = await screen.findByTestId('exec-search-btn');
+    expect(searchButton).toBeInTheDocument();
+    userEvent.click(searchButton);
+
+    expect(history.location.pathname).toBe('/foods/53013');
+  });
+
+  test('6. Se aparecem de 2 a 12 cards na tela após fazer uma busca de comida ou bebida', async () => {
+    const { history } = renderWithRouter(<App />);
+
+    history.push('/foods')
+
+    const button = await screen.findByTestId('search-top-btn')
+    userEvent.click(button);
+    const searchInput = await screen.findByTestId('search-input');
+    
+    userEvent.type(searchInput, /onion/i);
+
+    const ingredientRadio = await screen.findByTestId('ingredient-search-radio');
+    userEvent.click(ingredientRadio);
+    
+    const searchButton = await screen.findByTestId('exec-search-btn');
+    userEvent.click(searchButton);
+
+    const bigMac = await screen.findByText(/big mac/i);
+    expect(bigMac).toBeInTheDocument();
+
+    const images = await screen.findAllByRole('img');
+    
+  });
+  
+});
