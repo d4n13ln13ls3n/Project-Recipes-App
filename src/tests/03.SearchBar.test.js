@@ -171,8 +171,11 @@ describe('Testa o componente SearchBar', () => {
     // const { pathname } = history.location;
     //   await waitFor(() => { expect(pathname).toBe('/drinks/12564')
     // });
+    const { pathname } = history.location;
+      await waitFor(() => { expect(pathname).toBe('/drinks/12564')
+    })
 
-    const ingredientRadio = await screen.findByTestId('ingredient-search-radio')
+const ingredientRadio = await screen.findByTestId('ingredient-search-radio')
     userEvent.click(ingredientRadio);
     userEvent.type(textSearchInput, 'apple');
     userEvent.click(searchButton);
@@ -180,7 +183,8 @@ describe('Testa o componente SearchBar', () => {
     const firstLetterRadio = await screen.findByTestId('first-letter-search-radio')
     userEvent.click(firstLetterRadio);
     userEvent.type(textSearchInput, 'aaaa');
-    userEvent.click(searchButton);
+
+userEvent.click(searchButton);
 
         await waitFor(() => {
       expect(global.alert).toHaveBeenCalledTimes(1)
@@ -318,6 +322,34 @@ describe('Testa o componente SearchBar', () => {
 
   //   const { history } = renderWithRouter(<App />);
   //   history.push('/foods');
+    userEvent.click(searchButton);
+
+        await waitFor(() => {
+      expect(global.alert).toHaveBeenCalledTimes(1)
+    })
+
+  });
+
+  // test('7. Testa chamadas da API para busca pelo nome', async () => {
+  //   const fetch = jest.spyOn(global, 'fetch')
+
+  //   const showSearchBarButton = await screen.findByTestId('search-top-btn');
+  //   userEvent.click(showSearchBarButton);
+    
+  //   const searchButton = await screen.findByTestId('exec-search-btn');
+  //   const nameRadio = await screen.findByTestId('name-search-radio')
+  //   const textSearchInput = await screen.findByTestId('search-input');
+
+  //   userEvent.click(nameRadio);
+  //   userEvent.type(textSearchInput, 'Apple Karate');
+  //   userEvent.click(searchButton);
+
+  //   expect(fetch).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=Apple Karate')
+
+  // })
+
+  // test('8. Testa chamadas da API para busca pelo ingrediente', async () => {
+  //   const fetch = jest.spyOn(global, 'fetch')
 
   //   const showSearchBarButton = await screen.findByTestId('search-top-btn');
   //   userEvent.click(showSearchBarButton);
@@ -327,6 +359,7 @@ describe('Testa o componente SearchBar', () => {
   //   const textSearchInput = await screen.findByTestId('search-input');
     
   //   userEvent.click(ingredientRadio);
+
   //   userEvent.type(textSearchInput, /apple/i );
   //   userEvent.click(searchButton);
 
@@ -355,5 +388,12 @@ describe('Testa o componente SearchBar', () => {
 
   // });
 
+
+  //   userEvent.type(textSearchInput, 'apple');
+  //   userEvent.click(searchButton);
+
+  //   expect(fetch).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?f=apple')
+
+  // })
 
 });
