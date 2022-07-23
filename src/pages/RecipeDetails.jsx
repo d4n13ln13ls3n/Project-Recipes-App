@@ -24,16 +24,18 @@ function RecipeDetails() {
   };
 
   const recipe = apiRecipe();
-
+  // na linha 29, estava uma tag <dir> anteriormente, mas troquei (Daniel) por estar obsoleta
   return (
-    <dir>
+    <div>
+      <h1>Testing recipe details</h1>
       { recipe.strMeal !== undefined
     && (
       <div>
+        <h1>Testing recipe details</h1>
         <img
           data-testid="recipe-photo"
           className="recipeCard"
-          src="https://www.themealdb.com/images/media/meals/58oia61564916529.jpg"
+          src={ recipe.strMealThumb }
           alt={ recipe.strMeal }
         />
         <h2 data-testid="recipe-title">{ recipe.strMeal }</h2>
@@ -41,7 +43,7 @@ function RecipeDetails() {
         {/* <p data-testid="${index}-ingredient-name-and-measure">{  }</p> */}
         <p data-testid="instructions">{ recipe.strInstructions }</p>
       </div>)}
-    </dir>
+    </div>
   );
 }
 

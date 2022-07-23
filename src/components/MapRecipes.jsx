@@ -9,6 +9,7 @@ export default function MapRecipes({ filteredRecipe, id, name, thumb }) {
     <div>
       {/* <Filters /> */}
       <section className="recipeContainer">
+        <h1>Recipe Container</h1>
         {
           filteredRecipe.length ? (
             filteredRecipe.map((recipe, index) => (
