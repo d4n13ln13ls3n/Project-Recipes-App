@@ -64,6 +64,12 @@ export default function SearchBar({ setFilteredRecipe }) {
     setSavedFilters(selectedFilters);
   };
 
+  // const shablaw = (data) => {
+  //   if (!data) {
+  //     return global.alert(noMatchMessage);
+  //   }
+  // };
+
   useEffect(() => {
     const callBack = async () => {
       if (savedFilters.filterBySearch) {
@@ -95,6 +101,7 @@ export default function SearchBar({ setFilteredRecipe }) {
       }
     };
     callBack();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endPoints]);
 
   return (

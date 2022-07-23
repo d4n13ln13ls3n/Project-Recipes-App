@@ -21,13 +21,15 @@ export default function Foods() {
     if (savedFilters.filterBySearch) {
       setEndPoints({ endpoint1, endpoint2, endpoint3 });
     }
-  }, [savedFilters]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
       setFoods(await fetchFood([]));
     }
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
