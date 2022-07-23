@@ -32,7 +32,7 @@ export default function Drinks() {
   }, []);
 
   return (
-    <div>
+    <>
       <Header setFilteredRecipe={ setFilteredDrinks } />
       <MapRecipes
         filteredRecipe={ filteredDrinks }
@@ -41,6 +41,6 @@ export default function Drinks() {
         thumb="strDrinkThumb"
       />
       <Footer />
-    </div>
+    </>
   );
 }
