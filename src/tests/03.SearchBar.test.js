@@ -293,7 +293,31 @@ describe('Testa o componente SearchBar', () => {
 
   });
 
-  test('11. Testa chamadas da API para busca pelo nome', async () => {
+  test('11. Verifica se o campo first letter retorna um erro após ser feita uma pesquisa com uma letra que não tem resultados', async () => {
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
+
+    const { history } = renderWithRouter(<App />);
+    
+    history.push('/foods')
+
+    const showSearchBarButton = await screen.findByTestId('search-top-btn');
+    userEvent.click(showSearchBarButton);
+    
+    const searchButton = await screen.findByTestId('exec-search-btn');
+    const firstLetterRadio = await screen.findByTestId('first-letter-search-radio')
+    const textSearchInput = await screen.findByTestId('search-input');
+
+    userEvent.click(firstLetterRadio);
+    userEvent.type(textSearchInput, 'z');
+    userEvent.click(searchButton);
+    
+    await waitFor(() => {
+      expect(global.alert).toHaveBeenCalledTimes(1)
+    });
+
+  });
+
+  test('12. Testa chamadas da API para busca pelo nome', async () => {
     const fetch = jest.spyOn(global, 'fetch')
 
     const { history } = renderWithRouter(<App />);
