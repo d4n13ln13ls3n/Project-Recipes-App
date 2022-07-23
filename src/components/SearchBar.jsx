@@ -158,6 +158,6 @@ export default function SearchBar({ setFilteredRecipe }) {
   );
 }
 
-SearchBar.propTypes = {
-  setFilteredRecipe: PropTypes.func.isRequired,
-};
+// SearchBar.propTypes = {
+//   setFilteredRecipe: PropTypes.func.isRequired,
+// };
