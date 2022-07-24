@@ -2,18 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import fetchRecipeDetails from '../services/fetchRecipeDetails';
+import fetchFood from '../services/fetchFood';
+import fetchDrink from '../services/fetchDrink';
 import arrayIngredientsMeasure from '../services/arrayIngredientsMeasure';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState();
   const [recipeIngredient, setRecipeIngredient] = useState();
   const [recipeMeasure, setRecipeMeasure] = useState();
+  const [recommendationFood, setRecommendationFood] = useState([]);
+  const [recommendationDrinks, setRecommendationDrinks] = useState([]);
   const history = useHistory();
   const { location: { pathname } } = history;
   const id = useParams();
 
   useEffect(() => {
     const storeRecipe = async () => {
+      if (pathname === `/foods/${id.id}`) {
+        setRecommendationDrinks(await fetchDrink([]));
+      } else { setRecommendationFood(await fetchFood([])); }
       setRecipe(await fetchRecipeDetails(id.id, pathname));
     };
     storeRecipe();
@@ -38,7 +45,7 @@ function RecipeDetails() {
 
   useEffect(() => {
     if (recipe !== undefined) {
-      console.log(recipe);
+      // console.log(recipe, recommendationFood, recommendationDrinks);
       filterIngredient();
       filterMeasure();
     }
@@ -90,6 +97,8 @@ function RecipeDetails() {
                 data-testid="0-recomendation-card"
               />
               Essa vai ser a recomendação
+              <br />
+              <button type="button" data-testid="start-recipe-btn">Start Recipe</button>
             </div>
           ) : (
             <p>...</p>
