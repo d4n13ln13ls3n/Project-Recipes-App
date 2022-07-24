@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router';
+import PropTypes from 'prop-types';
 import recipesAppContext from '../context/RecipesAppContext';
 import searchIcon from '../images/searchIcon.svg';
 
@@ -45,17 +46,21 @@ export default function SearchBar({ setFilteredRecipe }) {
 
   const getJsonData = async (endpoint) => {
     const maxLimit = 12;
-    const response = await fetch(endpoint);
-    const data = await response.json();
-    if (data.meals) {
-      checkLengthMeals(data);
-      return data.meals.filter((_, index) => index < maxLimit);
+    try {
+      const response = await fetch(endpoint);
+      const data = await response.json();
+      if (data.meals) {
+        checkLengthMeals(data);
+        return data.meals.filter((_, index) => index < maxLimit);
+      }
+      if (data.drinks) {
+        checkLengthDrinks(data);
+        return data.drinks.filter((_, index) => index < maxLimit);
+      }
+      return null;
+    } catch (err) {
+      console.log('error', err);
     }
-    if (data.drinks) {
-      checkLengthDrinks(data);
-      return data.drinks.filter((_, index) => index < maxLimit);
-    }
-    return null;
   };
 
   const handleSearch = async () => {

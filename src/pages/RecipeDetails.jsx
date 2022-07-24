@@ -15,7 +15,6 @@ function RecipeDetails() {
   const history = useHistory();
   const { location: { pathname } } = history;
   const id = useParams();
-
   useEffect(() => {
     const storeRecipe = async () => {
       if (pathname === `/foods/${id.id}`) {
@@ -25,7 +24,6 @@ function RecipeDetails() {
     };
     storeRecipe();
   }, []);
-
   function filterIngredient() {
     const ingredients = arrayIngredientsMeasure.ingredients.map((ingredient) => (
       recipe[ingredient]
@@ -34,7 +32,6 @@ function RecipeDetails() {
       ? (ingredient !== '') : (ingredient !== null && ingredient !== undefined)));
     setRecipeIngredient(remove);
   }
-
   function filterMeasure() {
     const ingredients = arrayIngredientsMeasure.measure.map((ingredient) => (
       recipe[ingredient]
@@ -42,7 +39,6 @@ function RecipeDetails() {
     const remove = ingredients.filter((ingredient) => ingredient !== ' ');
     setRecipeMeasure(remove);
   }
-
   useEffect(() => {
     if (recipe !== undefined) {
       // console.log(recipe, recommendationFood, recommendationDrinks);
@@ -50,7 +46,6 @@ function RecipeDetails() {
       filterMeasure();
     }
   }, [recipe]);
-
   return (
     <div>
       {
@@ -107,5 +102,4 @@ function RecipeDetails() {
     </div>
   );
 }
-
 export default RecipeDetails;
