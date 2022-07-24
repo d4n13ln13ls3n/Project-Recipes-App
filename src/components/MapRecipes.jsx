@@ -1,27 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Loading from './Loading';
 import '../css/Recipes.css';
 
 export default function MapRecipes({ filteredRecipe, id, name, thumb }) {
+  console.log(filteredRecipe);
   return (
     <main className="recipeContainer">
       {
         filteredRecipe.length ? (
+
           filteredRecipe.map((recipe, index) => (
-            <div
+            <Link
+              to={ recipe.idMeal
+                ? `/foods/${recipe.idMeal}`
+                : `/drinks/${recipe.idDrink}` }
               key={ recipe[id] }
-              data-testid={ `${index}-recipe-card` }
-              className="recipeCard"
             >
-              <h3 data-testid={ `${index}-card-name` }>{recipe[name]}</h3>
-              <img
-                src={ recipe[thumb] }
-                alt={ recipe[name] }
-                data-testid={ `${index}-card-img` }
-                className="recipeImage"
-              />
-            </div>
+              <div
+                key={ recipe[id] }
+                data-testid={ `${index}-recipe-card` }
+                className="recipeCard"
+              >
+                <h3 data-testid={ `${index}-card-name` }>{recipe[name]}</h3>
+                <img
+                  src={ recipe[thumb] }
+                  alt={ recipe[name] }
+                  data-testid={ `${index}-card-img` }
+                  className="recipeImage"
+                />
+              </div>
+            </Link>
           ))
         ) : <Loading />
       }
