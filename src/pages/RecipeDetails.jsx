@@ -86,7 +86,7 @@ function RecipeDetails() {
               <div
                 data-testid="0-recomendation-card"
               />
-              Essa vai ser a recomendação
+              Essa vai ser a recomendação.
             </div>
           ) : (
             <p>...</p>
