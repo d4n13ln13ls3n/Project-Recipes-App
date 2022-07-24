@@ -5,6 +5,7 @@ import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import SearchBar from './SearchBar';
 import '../css/Header.css';
+import FilterButtons from './FilterButtons';
 
 export default function Header({ setFilteredRecipe, page }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -64,6 +65,7 @@ export default function Header({ setFilteredRecipe, page }) {
         )
 
       }
+      <FilterButtons />
     </header>
   );
 }

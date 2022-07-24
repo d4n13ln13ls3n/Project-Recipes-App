@@ -26,7 +26,7 @@ export default function Foods() {
 
   useEffect(() => {
     async function fetchData() {
-      setFoods(await fetchFood([]));
+      setFoods(await fetchFood([])); // era setada com array vazio antes
     }
     fetchData();
   }, []);
