@@ -94,6 +94,7 @@ function RecipeDetails() {
               Essa vai ser a recomendação
               <br />
               <button type="button" data-testid="start-recipe-btn">Start Recipe</button>
+
             </div>
           ) : (
             <p>...</p>
