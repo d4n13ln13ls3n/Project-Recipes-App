@@ -41,11 +41,12 @@ function RecipeDetails() {
   }
   useEffect(() => {
     if (recipe !== undefined) {
-      // console.log(recipe, recommendationFood, recommendationDrinks);
+      console.log(recipe, recommendationFood, recommendationDrinks);
       filterIngredient();
       filterMeasure();
     }
   }, [recipe]);
+
   return (
     <div>
       {
