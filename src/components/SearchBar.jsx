@@ -113,59 +113,57 @@ export default function SearchBar({ setFilteredRecipe }) {
   }, [endPoints]);
 
   return (
-    <div>
-      <section>
-        <label htmlFor="search-input">
-          <input
-            data-testid="search-input"
-            name="search-input"
-            onChange={ handleInputChange }
-            value={ selectedFilters.filterBySearch }
-          />
-        </label>
-        <label htmlFor="ingredient" name="ingredient">
-          <input
-            type="radio"
-            id="ingredient"
-            name="search-radio"
-            data-testid="ingredient-search-radio"
-            onChange={ handleRadioChange }
-            value="ingredient"
-          />
-          Ingredient
-        </label>
-        <label htmlFor="name" name="name">
-          <input
-            type="radio"
-            name="search-radio"
-            id="name"
-            data-testid="name-search-radio"
-            onChange={ handleRadioChange }
-            value="name"
-          />
-          Name
-        </label>
-        <label htmlFor="first-letter" name="first-letter">
-          <input
-            type="radio"
-            name="search-radio"
-            id="first-letter"
-            data-testid="first-letter-search-radio"
-            onChange={ handleRadioChange }
-            value="first-letter"
-          />
-          First Letter
-        </label>
-        <button
-          type="button"
-          data-testid="exec-search-btn"
-          onClick={ handleSearch }
-        >
-          <img src={ searchIcon } alt="search" />
-          <span>Fazer busca</span>
-        </button>
-      </section>
-    </div>
+    <>
+      <label htmlFor="search-input">
+        <input
+          data-testid="search-input"
+          name="search-input"
+          onChange={ handleInputChange }
+          value={ selectedFilters.filterBySearch }
+        />
+      </label>
+      <label htmlFor="ingredient" name="ingredient">
+        <input
+          type="radio"
+          id="ingredient"
+          name="search-radio"
+          data-testid="ingredient-search-radio"
+          onChange={ handleRadioChange }
+          value="ingredient"
+        />
+        Ingredient
+      </label>
+      <label htmlFor="name" name="name">
+        <input
+          type="radio"
+          name="search-radio"
+          id="name"
+          data-testid="name-search-radio"
+          onChange={ handleRadioChange }
+          value="name"
+        />
+        Name
+      </label>
+      <label htmlFor="first-letter" name="first-letter">
+        <input
+          type="radio"
+          name="search-radio"
+          id="first-letter"
+          data-testid="first-letter-search-radio"
+          onChange={ handleRadioChange }
+          value="first-letter"
+        />
+        First Letter
+      </label>
+      <button
+        type="button"
+        data-testid="exec-search-btn"
+        onClick={ handleSearch }
+      >
+        <img src={ searchIcon } alt="search" />
+        <span>Fazer busca</span>
+      </button>
+    </>
   );
 }
 
