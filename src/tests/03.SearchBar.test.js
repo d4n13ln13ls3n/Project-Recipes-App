@@ -32,6 +32,7 @@ describe('Testa o componente SearchBar', () => {
     history.push('/foods')
 
     const showSearchBarButton = await screen.findByTestId('search-top-btn');
+    expect(showSearchBarButton).toBeInTheDocument()
     userEvent.click(showSearchBarButton);
 
     const textSearchInput = await screen.findByTestId('search-input');
@@ -105,13 +106,13 @@ describe('Testa o componente SearchBar', () => {
     
   });
 
-  test('5. Testa  ...', async () => {
+  test('5. Verifica se os filtros estão funcionando corretamente na página foods', async () => {
     jest.spyOn(window, 'alert').mockImplementation(() => {});
     // global.fetch = async () => ({
     //   json: async () => (apiResponseMock),
     // });
 
-    const { history, debug } = renderWithRouter(<App />);
+    const { history } = renderWithRouter(<App />);
     
     history.push('/foods')
 
@@ -121,16 +122,20 @@ describe('Testa o componente SearchBar', () => {
     const searchButton = await screen.findByTestId('exec-search-btn');
     const firstLetterRadio = await screen.findByTestId('first-letter-search-radio')
     const textSearchInput = await screen.findByTestId('search-input');
-    
     const ingredientRadio = await screen.findByTestId('ingredient-search-radio')
+
     userEvent.click(ingredientRadio);
     userEvent.type(textSearchInput, 'apple');
     userEvent.click(searchButton);
 
     const nameRadio = await screen.findByTestId('name-search-radio')
     userEvent.click(nameRadio);
-    userEvent.type(textSearchInput, 'steak');
+    userEvent.type(textSearchInput, 'big mac');
     userEvent.click(searchButton);
+    
+    // const { pathname } = history.location;
+    //   await waitFor(() => { expect(pathname).toBe('/foods/53013')
+    // })
 
     userEvent.click(firstLetterRadio);
     userEvent.type(textSearchInput, 'chicken');
@@ -144,10 +149,10 @@ describe('Testa o componente SearchBar', () => {
     
   });
 
-  test('5. Testa  ...', async () => {
+  test('6. Verifica se os filtros estão funcionando corretamente na página drinks', async () => {
     jest.spyOn(window, 'alert').mockImplementation(() => {});
 
-    const { history, debug } = renderWithRouter(<App />);
+    const { history } = renderWithRouter(<App />);
     
     history.push('/drinks')
 
@@ -159,8 +164,12 @@ describe('Testa o componente SearchBar', () => {
     const textSearchInput = await screen.findByTestId('search-input');
 
     userEvent.click(nameRadio);
-    userEvent.type(textSearchInput, 'beer');
+    userEvent.type(textSearchInput, 'Apple Karate');
     userEvent.click(searchButton);
+    
+    const { pathname } = history.location;
+      await waitFor(() => { expect(pathname).toBe('/drinks/12564')
+    })
 
     const ingredientRadio = await screen.findByTestId('ingredient-search-radio')
     userEvent.click(ingredientRadio);
@@ -169,8 +178,12 @@ describe('Testa o componente SearchBar', () => {
 
     const firstLetterRadio = await screen.findByTestId('first-letter-search-radio')
     userEvent.click(firstLetterRadio);
-    userEvent.type(textSearchInput, 'a');
+    userEvent.type(textSearchInput, 'aaaa');
     userEvent.click(searchButton);
+
+        await waitFor(() => {
+      expect(global.alert).toHaveBeenCalledTimes(1)
+    })
 
   });
 
