@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import fetchRecipeDetails from '../services/fetchRecipeDetails';
+import arrayIngredientsMeasure from '../services/arrayIngredientsMeasure';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState();
@@ -19,25 +20,16 @@ function RecipeDetails() {
   }, []);
 
   function filterIngredient() {
-    const keys = Object.keys(recipe);
-    const number = -8;
-    const filtro = keys.filter((key, index) => (
-      key === `strIngredient${`${number + index}`}`
-    ));
-    const ingredients = filtro.map((ingredient) => (
+    const ingredients = arrayIngredientsMeasure.ingredients.map((ingredient) => (
       recipe[ingredient]
     ));
-    const remove = ingredients.filter((ingredient) => ingredient !== '');
+    const remove = ingredients.filter((ingredient) => (pathname === `/foods/${id.id}`
+      ? (ingredient !== '') : (ingredient !== null && ingredient !== undefined)));
     setRecipeIngredient(remove);
   }
 
   function filterMeasure() {
-    const keys = Object.keys(recipe);
-    const number = -28;
-    const filtro = keys.filter((key, i) => (
-      key === `strMeasure${`${number + i}`}`
-    ));
-    const ingredients = filtro.map((ingredient) => (
+    const ingredients = arrayIngredientsMeasure.measure.map((ingredient) => (
       recipe[ingredient]
     ));
     const remove = ingredients.filter((ingredient) => ingredient !== ' ');
@@ -63,26 +55,37 @@ function RecipeDetails() {
               <img
                 data-testid="recipe-photo"
                 className="recipeCard"
-                src={ recipe.strMealThumb }
-                alt={ recipe.strMeal }
+                src={ pathname === `/foods/${id.id}`
+                  ? (recipe.strMealThumb) : (recipe.strDrinkThumb) }
+                alt={ pathname === `/foods/${id.id}`
+                  ? (recipe.strMeal) : (recipe.strDrink) }
               />
-              <h2 data-testid="recipe-title">{ recipe.strMeal }</h2>
-              <p data-testid="recipe-category">{ recipe.strCategory }</p>
+              <h2 data-testid="recipe-title">
+                { pathname === `/foods/${id.id}`
+                  ? (recipe.strMeal) : (recipe.strDrink) }
+              </h2>
+              <p data-testid="recipe-category">
+                { pathname === `/foods/${id.id}`
+                  ? (recipe.strCategory)
+                  : (`${recipe.strCategory} -- ${recipe.strAlcoholic}`)}
+              </p>
               {
                 recipeIngredient.map((e, i) => (
                   <p key={ `key${i}` } data-testid={ `${i}-ingredient-name-and-measure` }>
-                    { `Ingredient: ${e} -- Measure: ${recipeMeasure[i]}` }
+                    { `${e} - ${recipeMeasure[i]}` }
                   </p>
                 ))
               }
               <p data-testid="instructions">{ recipe.strInstructions }</p>
-              <iframe
-                title="Video"
-                width="320"
-                height="215"
-                data-testid="video"
-                src={ recipe.strYoutube }
-              />
+              { pathname === `/foods/${id.id}`
+                && (
+                  <iframe
+                    title="Video"
+                    width="320"
+                    height="215"
+                    data-testid="video"
+                    src={ recipe.strYoutube }
+                  />)}
               <div
                 data-testid="0-recomendation-card"
               />
