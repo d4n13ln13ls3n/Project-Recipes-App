@@ -1,6 +1,6 @@
 import Header from '../components/Header';
 import App from '../App';
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, cleanup } from '@testing-library/react';
 import renderWithRouter from '../utils/renderWithRouter';
 import userEvent from '@testing-library/user-event';
 
@@ -24,6 +24,8 @@ const apiResponseMock = {
 //   Promise.resolve({
 //     json: () => Promise.resolve(apiResponseMock),
 //   });
+
+afterEach(cleanup);
 
 describe('Testa o componente SearchBar', () => {
   test('1. Testa se os radio buttons, o text input e o botão de busca aparecem na tela de foods', async () => {
@@ -83,7 +85,7 @@ describe('Testa o componente SearchBar', () => {
     
   });
 
-  test('4. Testa os RadioButton ', async () => {
+  test('4. Testa os Radio Buttons ', async () => {
     const { history } = renderWithRouter(<App />);
     
     history.push('/foods')
@@ -144,9 +146,8 @@ describe('Testa o componente SearchBar', () => {
 
     await waitFor(() => {
       expect(global.alert).toHaveBeenCalledTimes(1)
-    })
+    });
 
-    
   });
 
   test('6. Verifica se os filtros estão funcionando corretamente na página drinks', async () => {
@@ -167,11 +168,14 @@ describe('Testa o componente SearchBar', () => {
     userEvent.type(textSearchInput, 'Apple Karate');
     userEvent.click(searchButton);
     
+    // const { pathname } = history.location;
+    //   await waitFor(() => { expect(pathname).toBe('/drinks/12564')
+    // });
     const { pathname } = history.location;
       await waitFor(() => { expect(pathname).toBe('/drinks/12564')
     })
 
-    const ingredientRadio = await screen.findByTestId('ingredient-search-radio')
+const ingredientRadio = await screen.findByTestId('ingredient-search-radio')
     userEvent.click(ingredientRadio);
     userEvent.type(textSearchInput, 'apple');
     userEvent.click(searchButton);
@@ -179,15 +183,16 @@ describe('Testa o componente SearchBar', () => {
     const firstLetterRadio = await screen.findByTestId('first-letter-search-radio')
     userEvent.click(firstLetterRadio);
     userEvent.type(textSearchInput, 'aaaa');
-    userEvent.click(searchButton);
+
+userEvent.click(searchButton);
 
         await waitFor(() => {
       expect(global.alert).toHaveBeenCalledTimes(1)
-    })
+    });
 
   });
 
-  test('6. Se o usuário é redirecionado para a página de detalhes de um prato ao fazer uma busca que retorne somente um resultado', async () => {
+  test('7. Se o usuário é redirecionado para a página de detalhes de um prato ao fazer uma busca que retorne somente um resultado', async () => {
     const { history } = renderWithRouter(<App />);
 
     history.push('/foods')
@@ -208,10 +213,12 @@ describe('Testa o componente SearchBar', () => {
     expect(searchButton).toBeInTheDocument();
     userEvent.click(searchButton);
 
-    expect(history.location.pathname).toBe('/foods/53013');
+    const testingDetails = await screen.findByText(/testing recipe details/i);
+    expect(testingDetails).toBeInTheDocument();
+    // expect(history.location.pathname).toBe('/foods/53013');
   });
 
-  test('6. Se aparecem de 2 a 12 cards na tela após fazer uma busca de comida ou bebida', async () => {
+  test('8. Se aparecem de 2 a 12 cards na tela após fazer uma busca de comida ou bebida por ingrediente', async () => {
     const { history } = renderWithRouter(<App />);
 
     history.push('/foods')
@@ -228,11 +235,110 @@ describe('Testa o componente SearchBar', () => {
     const searchButton = await screen.findByTestId('exec-search-btn');
     userEvent.click(searchButton);
 
+    const images = await screen.findAllByRole('heading', { level: 3 });
+    expect(images).toHaveLength(12);
+    
     const bigMac = await screen.findByText(/big mac/i);
     expect(bigMac).toBeInTheDocument();
 
-    const images = await screen.findAllByRole('img');
     
   });
-  
+
+  test('9. Se aparecem de 2 a 12 cards na tela após fazer uma busca de comida ou bebida por primeira letra', async () => {
+    const { history } = renderWithRouter(<App />);
+
+    history.push('/foods')
+
+    const button = await screen.findByTestId('search-top-btn')
+    userEvent.click(button);
+    const searchInput = await screen.findByTestId('search-input');
+    
+    userEvent.type(searchInput, 'a');
+
+    const firstLetterRadio = await screen.findByTestId('first-letter-search-radio');
+    userEvent.click(firstLetterRadio);
+    
+    const searchButton = await screen.findByTestId('exec-search-btn');
+    userEvent.click(searchButton);
+
+    const recipeContainer = await screen.findByText(/recipe container/i);
+    expect(recipeContainer).toBeInTheDocument();
+    
+    // const headings = await screen.findAllByRole('heading', { level: 3 });
+    // expect(headings).toHaveLength(4);
+    
+    // const apamBalik = await screen.findByText(/Apam balik/i);
+    // expect(apamBalik).toBeInTheDocument();
+
+    
+  });
+
+  test('10. Verifica se o campo first letter retorna um erro após ser feita uma pesquisa com mais de um caractere', async () => {
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
+
+    const { history } = renderWithRouter(<App />);
+    
+    history.push('/foods')
+
+    const showSearchBarButton = await screen.findByTestId('search-top-btn');
+    userEvent.click(showSearchBarButton);
+    
+    const searchButton = await screen.findByTestId('exec-search-btn');
+    const firstLetterRadio = await screen.findByTestId('first-letter-search-radio')
+    const textSearchInput = await screen.findByTestId('search-input');
+
+    userEvent.click(firstLetterRadio);
+    userEvent.type(textSearchInput, 'aaa');
+    userEvent.click(searchButton);
+    
+    await waitFor(() => {
+      expect(global.alert).toHaveBeenCalledTimes(1)
+    });
+
+  });
+
+  test('11. Verifica se o campo first letter retorna um erro após ser feita uma pesquisa com uma letra que não tem resultados', async () => {
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
+
+    const { history } = renderWithRouter(<App />);
+    
+    history.push('/foods')
+
+    const showSearchBarButton = await screen.findByTestId('search-top-btn');
+    userEvent.click(showSearchBarButton);
+    
+    const searchButton = await screen.findByTestId('exec-search-btn');
+    const firstLetterRadio = await screen.findByTestId('first-letter-search-radio')
+    const textSearchInput = await screen.findByTestId('search-input');
+
+    userEvent.click(firstLetterRadio);
+    userEvent.type(textSearchInput, 'z');
+    userEvent.click(searchButton);
+    
+    await waitFor(() => {
+      expect(global.alert).toHaveBeenCalledTimes(1)
+    });
+
+  });
+
+  test('12. Testa chamadas da API para busca pelo nome', async () => {
+    const fetch = jest.spyOn(global, 'fetch')
+
+    const { history } = renderWithRouter(<App />);
+    history.push('/foods');
+    const showSearchBarButton = await screen.findByTestId('search-top-btn');
+    userEvent.click(showSearchBarButton);
+    
+    const searchButton = await screen.findByTestId('exec-search-btn');
+    const nameRadio = await screen.findByTestId('name-search-radio')
+    const textSearchInput = await screen.findByTestId('search-input');
+
+    userEvent.click(nameRadio);
+    userEvent.type(textSearchInput, 'Apple Karate');
+    userEvent.click(searchButton);
+
+    expect(fetch).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=Apple Karate')
+
+  });
+
 });
