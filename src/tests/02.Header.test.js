@@ -27,7 +27,7 @@ describe.only('Testa o componente Header', () => {
     expect(searchIcon2).toBeInTheDocument();
   });
 
-  test('3. Se os títulos aparecem de forma correta', async () => {
+  test.only('3. Se os títulos aparecem de forma correta', async () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
     
@@ -46,12 +46,12 @@ describe.only('Testa o componente Header', () => {
 
     history.push('/done-recipes');
 
-    const h1DoneRecipes = await screen.findByRole('heading', { level: 1});
+    const h1DoneRecipes = await screen.findByText(/done/i);
     expect(h1DoneRecipes).toBeInTheDocument();
 
     history.push('/favorite-recipes');
 
-    const h1FavoriteRecipes = await screen.findByRole('heading', { level: 1});
+    const h1FavoriteRecipes = await screen.findByText(/favorite/i);
     expect(h1FavoriteRecipes).toBeInTheDocument();
   });
   
