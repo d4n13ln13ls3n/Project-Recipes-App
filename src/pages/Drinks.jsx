@@ -26,7 +26,9 @@ export default function Drinks() {
 
   useEffect(() => {
     async function fetchData() {
-      setDrinks(await fetchDrink([]));
+      const maxLimit = 12;
+      const newFoods = await fetchDrink([]);
+      setDrinks(newFoods.filter((_, index) => index < maxLimit));
     }
     fetchData();
   }, []);

@@ -12,7 +12,6 @@ export default function RecipesAppProvider({ children }) {
   const [savedFilters, setSavedFilters] = useState({
     filterBySearch: '',
     filterByRadio: '',
-    filterByButton: '', // idem a chave adicionada no componente SearchBar
   });
 
   // hooks costumizados, o useFoodsAndDrinks faz a requisição das comidas e bebidas

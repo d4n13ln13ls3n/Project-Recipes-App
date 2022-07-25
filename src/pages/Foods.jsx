@@ -26,7 +26,9 @@ export default function Foods() {
 
   useEffect(() => {
     async function fetchData() {
-      setFoods(await fetchFood([])); // era setada com array vazio antes
+      const maxLimit = 12;
+      const newFoods = await fetchFood([]);
+      setFoods(newFoods.filter((_, index) => index < maxLimit)); // era setada com array vazio antes
     }
     fetchData();
   }, []);
