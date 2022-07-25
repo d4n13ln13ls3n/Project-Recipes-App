@@ -1,46 +1,45 @@
 import React, { useContext, useEffect } from 'react';
 import recipesAppContext from '../context/RecipesAppContext';
 import Header from '../components/Header';
-import MapRecipes from '../components/MapRecipes';
+import Recipes from '../components/Recipes';
 import fetchFood from '../services/fetchFood';
+import Footer from '../components/Footer';
 
 export default function Foods() {
   const {
     filteredFoods,
+    savedFilters,
     setFilteredFoods,
     setFoods,
-    savedFilters,
     setEndPoints,
   } = useContext(recipesAppContext);
 
-  const endpoint1 = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${savedFilters.filterBySearch}`;
-  const endpoint2 = `https://www.themealdb.com/api/json/v1/1/search.php?s=${savedFilters.filterBySearch}`;
-  const endpoint3 = `https://www.themealdb.com/api/json/v1/1/search.php?f=${savedFilters.filterBySearch}`;
-
   useEffect(() => {
-    if (savedFilters.filterBySearch) {
-      setEndPoints({ endpoint1, endpoint2, endpoint3 });
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const fetchData = async () => {
+      if (savedFilters.filterBySearch) {
+        const endpoint1 = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${savedFilters.filterBySearch}`;
+        const endpoint2 = `https://www.themealdb.com/api/json/v1/1/search.php?s=${savedFilters.filterBySearch}`;
+        const endpoint3 = `https://www.themealdb.com/api/json/v1/1/search.php?f=${savedFilters.filterBySearch}`;
 
-  useEffect(() => {
-    async function fetchData() {
-      setFoods(await fetchFood([]));
-    }
+        return setEndPoints({ endpoint1, endpoint2, endpoint3 });
+      }
+      const maxLimit = 12;
+      const newFoods = await fetchFood([]);
+      setFoods(newFoods.filter((_, index) => index < maxLimit));
+    };
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [savedFilters.filterBySearch]);
 
   return (
-    <div>
+    <>
       <Header setFilteredRecipe={ setFilteredFoods } />
-      <MapRecipes
+      <Recipes
         filteredRecipe={ filteredFoods }
         id="idMeal"
         name="strMeal"
         thumb="strMealThumb"
       />
-    </div>
+      <Footer />
+    </>
   );
 }

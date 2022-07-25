@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 import RecipesAppContext from '../context/RecipesAppContext';
 
 export default function Login() {
@@ -10,15 +10,11 @@ export default function Login() {
     setLoginData((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const history = useHistory();
-
   const handleSubmit = () => {
     setLogin(loginData);
     localStorage.setItem('user', JSON.stringify({ email: loginData.email }));
     localStorage.setItem('mealsToken', JSON.stringify(1));
     localStorage.setItem('cocktailsToken', JSON.stringify(1));
-
-    history.push('/foods');
   };
 
   const isActiveButton = () => {
@@ -48,14 +44,16 @@ export default function Login() {
           onChange={ handleChange }
         />
       </label>
-      <button
-        type="button"
-        data-testid="login-submit-btn"
-        onClick={ handleSubmit }
-        disabled={ !isActiveButton() }
-      >
-        Enter
-      </button>
+      <Link to="/foods">
+        <button
+          type="button"
+          data-testid="login-submit-btn"
+          onClick={ handleSubmit }
+          disabled={ !isActiveButton() }
+        >
+          Enter
+        </button>
+      </Link>
     </form>
   );
 }

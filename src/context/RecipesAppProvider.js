@@ -8,14 +8,14 @@ export default function RecipesAppProvider({ children }) {
   const [login, setLogin] = useState({ email: '', password: '' });
   const [filters, setFilters] = useState({ recipesLimit: 12 });
   const [renderItems, setRenderItems] = useState(false);
-
+  const [filterButtons, setFilterButtons] = useState([]);
   const [savedFilters, setSavedFilters] = useState({
     filterBySearch: '',
     filterByRadio: '',
   });
 
-  // hooks costumizados, o useFoodsAndDrinks ele faz a requisição das comidas e bebidas
-  // e o useFilter ele filtra as comidas e bebidas basiadas na seleção do usuário
+  // hooks costumizados, o useFoodsAndDrinks faz a requisição das comidas e bebidas
+  // e o useFilter ele filtra as comidas e bebidas baseadas na seleção do usuário
   const [foods, drinks, setFoods, setDrinks] = useFoodsAndDrinks();
   const [
     filteredFoods,
@@ -49,6 +49,8 @@ export default function RecipesAppProvider({ children }) {
     setFilteredDrinks,
     endPoints,
     setEndPoints,
+    filterButtons,
+    setFilterButtons,
   };
 
   return (
