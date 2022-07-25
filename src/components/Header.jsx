@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import SearchBar from './SearchBar';
+import '../css/Header.css';
+import FilterButtons from './FilterButtons';
 
 export default function Header({ setFilteredRecipe, page }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -29,42 +31,50 @@ export default function Header({ setFilteredRecipe, page }) {
 
   return (
     <header>
-      { titleSearchBar() }
-      <Link to="/profile">
-        <button
-          type="button"
-          data-testid="profile-top-btn"
-          src={ profileIcon }
-        >
-          {/* <img src={ profileIcon } alt="profile" /> */}
-          Profile
-        </button>
-      </Link>
-      {
-        page !== 'profile' && page !== 'doneRecipes' && page !== 'favoriteRecipes' && (
+      <div className="header">
+        <Link to="/profile">
           <button
             type="button"
-            data-testid="search-top-btn"
-            onClick={ () => setIsVisible((prevState) => !prevState) }
-            src={ searchIcon }
+            data-testid="profile-top-btn"
+            src={ profileIcon }
           >
-            {/* <img src={ searchIcon } alt="search" /> */}
-            Open Search
+            <img src={ profileIcon } alt="profile" />
           </button>
-        )
-      }
+        </Link>
+        { titleSearchBar() }
+        {
+          page !== 'profile' && page !== 'doneRecipes' && page !== 'favoriteRecipes' && (
+            <button
+              type="button"
+              data-testid="search-top-btn"
+              onClick={ () => setIsVisible((prevState) => !prevState) }
+              src={ searchIcon }
+            >
+              <img src={ searchIcon } alt="search" />
+            </button>
+          )
+        }
+      </div>
       {
         isVisible && (
-          <SearchBar
-            setFilteredRecipe={ setFilteredRecipe }
-          />
+          <div className="headerFilters">
+            <SearchBar
+              setFilteredRecipe={ setFilteredRecipe }
+            />
+          </div>
         )
       }
+      <FilterButtons />
     </header>
   );
 }
 
 Header.propTypes = {
-  setFilteredRecipe: PropTypes.func.isRequired,
-  page: PropTypes.string.isRequired,
+  setFilteredRecipe: PropTypes.func,
+  page: PropTypes.string,
+};
+
+Header.defaultProps = {
+  setFilteredRecipe: () => null,
+  page: '',
 };
