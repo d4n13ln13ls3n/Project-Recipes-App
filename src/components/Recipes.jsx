@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Loading from './Loading';
 import '../css/Recipes.css';
 
-export default function MapRecipes({ filteredRecipe, id, name, thumb }) {
+export default function Recipes({ filteredRecipe, id, name, thumb }) {
   return (
     <main className="recipeContainer">
       {
@@ -29,7 +29,7 @@ export default function MapRecipes({ filteredRecipe, id, name, thumb }) {
   );
 }
 
-MapRecipes.propTypes = {
+Recipes.propTypes = {
   filteredRecipe: PropTypes.arrayOf(PropTypes.object).isRequired,
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
