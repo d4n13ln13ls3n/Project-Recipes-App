@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 describe.only('Testa a página Recipes', () => {
   test('1. Se os botões com as cinco categorias de comidas aparecem na tela', async () => {
     const { history } = renderWithRouter(<App />);
-    history.push('/recipes');
+    history.push('/foods');
 
     const beefButton = screen.findByRole('button', { name: /beef/i });
     expect(beefButton).toBeInTheDocument();
@@ -27,7 +27,7 @@ describe.only('Testa a página Recipes', () => {
 
   test('2. Se os botões com as cinco categorias de bebidas aparecem na tela', async () => {
     const { history } = renderWithRouter(<App />);
-    history.push('/recipes');
+    history.push('/drinks');
 
     const ordinaryButton = screen.findByRole('button', { name: /Ordinary Drink/i });
     expect(ordinaryButton).toBeInTheDocument();
@@ -43,5 +43,21 @@ describe.only('Testa a página Recipes', () => {
 
     const cocoaButton = screen.findByRole('button', { name: /Cocoa/i });
     expect(cocoaButton).toBeInTheDocument();
-  });  
+  });
+
+  test('3. Se ao clicar no botão BEEF as 12 primeiras receitas desta categoria são retornadas, async () => {
+    const { history } = renderWithRouter(<App />);
+    history.push('/drinks');
+
+    const beefButton = await screen.findByRole('button', { name: /beef/i });
+    expect(beefButton).toBeInTheDocument();
+
+    userEvent.click(beefButton);
+
+    const bigMac = await screen.findByText(/big mac/i);
+    expect(bigMac).toBeInTheDocument();
+
+    const images = await screen.findAllByRole('img');
+    expect(images).toHaveLength(12);
+  });
 });
