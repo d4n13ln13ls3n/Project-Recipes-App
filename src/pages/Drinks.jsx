@@ -1,40 +1,39 @@
 import React, { useContext, useEffect } from 'react';
 import recipesAppContext from '../context/RecipesAppContext';
 import Header from '../components/Header';
-import MapRecipes from '../components/MapRecipes';
+import Recipes from '../components/Recipes';
 import fetchDrink from '../services/fetchDrink';
 import Footer from '../components/Footer';
 
 export default function Drinks() {
   const {
     filteredDrinks,
+    savedFilters,
     setFilteredDrinks,
     setDrinks,
-    savedFilters,
     setEndPoints,
   } = useContext(recipesAppContext);
 
-  const endpoint1 = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${savedFilters.filterBySearch}`;
-  const endpoint2 = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${savedFilters.filterBySearch}`;
-  const endpoint3 = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${savedFilters.filterBySearch}`;
-
   useEffect(() => {
-    if (savedFilters.filterBySearch) {
-      setEndPoints({ endpoint1, endpoint2, endpoint3 });
-    }
-  }, [savedFilters]);
+    const fetchData = async () => {
+      if (savedFilters.filterBySearch) {
+        const endpoint1 = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${savedFilters.filterBySearch}`;
+        const endpoint2 = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${savedFilters.filterBySearch}`;
+        const endpoint3 = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${savedFilters.filterBySearch}`;
 
-  useEffect(() => {
-    async function fetchData() {
-      setDrinks(await fetchDrink([]));
-    }
+        return setEndPoints({ endpoint1, endpoint2, endpoint3 });
+      }
+      const maxLimit = 12;
+      const newDrinks = await fetchDrink([]);
+      setDrinks(newDrinks.filter((_, index) => index < maxLimit));
+    };
     fetchData();
-  }, []);
+  }, [savedFilters.filterBySearch]);
 
   return (
     <>
       <Header setFilteredRecipe={ setFilteredDrinks } />
-      <MapRecipes
+      <Recipes
         filteredRecipe={ filteredDrinks }
         id="strDrink"
         name="strDrink"

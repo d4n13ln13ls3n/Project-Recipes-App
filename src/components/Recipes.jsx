@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import Loading from './Loading';
 import '../css/Recipes.css';
 
-export default function MapRecipes({ filteredRecipe, id, name, thumb }) {
-  console.log(filteredRecipe);
+export default function Recipes({ filteredRecipe, id, name, thumb }) {
   return (
     <main className="recipeContainer">
       {
@@ -39,7 +38,7 @@ export default function MapRecipes({ filteredRecipe, id, name, thumb }) {
   );
 }
 
-MapRecipes.propTypes = {
+Recipes.propTypes = {
   filteredRecipe: PropTypes.arrayOf(PropTypes.object).isRequired,
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
