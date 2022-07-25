@@ -1,27 +1,51 @@
-import Header from '../components/Header';
 import App from '../App';
-import { screen } from '@testing-library/react';
+import { cleanup, screen } from '@testing-library/react';
 import renderWithRouter from '../utils/renderWithRouter';
 import userEvent from '@testing-library/user-event';
+import Recipes from '../components/Recipes';
 
-describe.only('Testa a página Recipes', () => {
+// const apiResponseMock = {
+//   "meals":[
+//     {"strCategory":"Beef"},
+//     {"strCategory":"Breakfast"},
+//     {"strCategory":"Chicken"},
+//     {"strCategory":"Dessert"},
+//     {"strCategory":"Goat"},
+//   ],
+//   "drinks":[
+//     {"strCategory":"Ordinary Drink"},
+//     {"strCategory":"Cocktail"},
+//     {"strCategory":"Shake"},
+//     {"strCategory":"Other\/Unknown"},
+//     {"strCategory":"Cocoa"},
+//   ],
+// };
+
+// global.fetch = () =>
+//   Promise.resolve({
+//     json: () => Promise.resolve(apiResponseMock),
+//   });
+
+  afterEach(cleanup);
+  
+  describe('Testa a página Recipes', () => {
   test('1. Se os botões com as cinco categorias de comidas aparecem na tela', async () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
 
-    const beefButton = screen.findByRole('button', { name: /beef/i });
+    const beefButton = await screen.findByRole('button', { name: /Beef/i } );
     expect(beefButton).toBeInTheDocument();
 
-    const breakfastButton = screen.findByRole('button', { name: /breakfast/i });
+    const breakfastButton = await screen.findByRole('button', { name: /breakfast/i });
     expect(breakfastButton).toBeInTheDocument();
 
-    const chickenButton = screen.findByRole('button', { name: /chicken/i });
+    const chickenButton = await screen.findByRole('button', { name: /chicken/i });
     expect(chickenButton).toBeInTheDocument();
 
-    const dessertButton = screen.findByRole('button', { name: /dessert/i });
+    const dessertButton = await screen.findByRole('button', { name: /dessert/i });
     expect(dessertButton).toBeInTheDocument();
 
-    const goatButton = screen.findByRole('button', { name: /goat/i });
+    const goatButton = await screen.findByRole('button', { name: /goat/i });
     expect(goatButton).toBeInTheDocument();
   });
 
@@ -29,27 +53,28 @@ describe.only('Testa a página Recipes', () => {
     const { history } = renderWithRouter(<App />);
     history.push('/drinks');
 
-    const ordinaryButton = screen.findByRole('button', { name: /Ordinary Drink/i });
+    const ordinaryButton = await screen.findByRole('button', { name: /Ordinary Drink/i });
     expect(ordinaryButton).toBeInTheDocument();
 
-    const cocktailButton = screen.findByRole('button', { name: /Cocktail/i });
+    const cocktailButton = await screen.findByRole('button', { name: /Cocktail/i });
     expect(cocktailButton).toBeInTheDocument();
 
-    const shakeButton = screen.findByRole('button', { name: /Shake/i });
+    const shakeButton = await screen.findByRole('button', { name: /Shake/i });
     expect(shakeButton).toBeInTheDocument();
 
-    const unknownButton = screen.findByRole('button', { name: /Other/i });
-    expect(dessertButton).toBeInTheDocument();
+    const unknownButton = await screen.findByRole('button', { name: /Other/i });
+    expect(unknownButton).toBeInTheDocument();
 
-    const cocoaButton = screen.findByRole('button', { name: /Cocoa/i });
+    const cocoaButton = await screen.findByRole('button', { name: /Cocoa/i });
     expect(cocoaButton).toBeInTheDocument();
-  });
-
+  
   test('3. Se ao clicar no botão BEEF as 12 primeiras receitas desta categoria são retornadas', async () => {
-    const { history } = renderWithRouter(<App />);
-    history.push('/drinks');
+    const { history, debug } = renderWithRouter(<App />);
+    history.push('/foods');
 
-    const beefButton = await screen.findByRole('button', { name: /beef/i });
+    // const beefButton = await screen.findByRole('button', { name: /beef/i });
+    debug();
+    const beefButton = await screen.findByText(/beef/i);
     expect(beefButton).toBeInTheDocument();
 
     userEvent.click(beefButton);
@@ -57,8 +82,8 @@ describe.only('Testa a página Recipes', () => {
     const bigMac = await screen.findByText(/big mac/i);
     expect(bigMac).toBeInTheDocument();
 
-    const images = await screen.findAllByRole('img');
-    expect(images).toHaveLength(12);
+    const headings = await screen.findAllByRole('heading', { level: 3 });
+    expect(headings).toHaveLength(12);
   });
 
 });
