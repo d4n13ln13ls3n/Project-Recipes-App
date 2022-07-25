@@ -8,28 +8,25 @@ import Footer from '../components/Footer';
 export default function Drinks() {
   const {
     filteredDrinks,
+    savedFilters,
     setFilteredDrinks,
     setDrinks,
-    savedFilters,
     setEndPoints,
   } = useContext(recipesAppContext);
 
-  const endpoint1 = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${savedFilters.filterBySearch}`;
-  const endpoint2 = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${savedFilters.filterBySearch}`;
-  const endpoint3 = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${savedFilters.filterBySearch}`;
-
   useEffect(() => {
-    if (savedFilters.filterBySearch) {
-      setEndPoints({ endpoint1, endpoint2, endpoint3 });
-    }
-  }, [savedFilters]);
+    const fetchData = async () => {
+      if (savedFilters.filterBySearch) {
+        const endpoint1 = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${savedFilters.filterBySearch}`;
+        const endpoint2 = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${savedFilters.filterBySearch}`;
+        const endpoint3 = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${savedFilters.filterBySearch}`;
 
-  useEffect(() => {
-    async function fetchData() {
+        return setEndPoints({ endpoint1, endpoint2, endpoint3 });
+      }
       setDrinks(await fetchDrink([]));
-    }
+    };
     fetchData();
-  }, []);
+  }, [savedFilters.filterBySearch]);
 
   return (
     <>
