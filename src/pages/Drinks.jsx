@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import recipesAppContext from '../context/RecipesAppContext';
 import Header from '../components/Header';
-import MapRecipes from '../components/MapRecipes';
+import Recipes from '../components/Recipes';
 import fetchDrink from '../services/fetchDrink';
 import Footer from '../components/Footer';
 
@@ -36,7 +36,7 @@ export default function Drinks() {
   return (
     <>
       <Header setFilteredRecipe={ setFilteredDrinks } />
-      <MapRecipes
+      <Recipes
         filteredRecipe={ filteredDrinks }
         id="strDrink"
         name="strDrink"
