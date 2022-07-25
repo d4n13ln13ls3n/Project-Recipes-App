@@ -151,7 +151,7 @@ function RecipeDetails() {
               <button
                 type="button"
                 data-testid="start-recipe-btn"
-                id="start-recipe-btn"
+                className="start-recipe-btn"
               >
                 Start Recipe
               </button>
