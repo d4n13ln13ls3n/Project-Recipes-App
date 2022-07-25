@@ -66,5 +66,5 @@ describe('Testa a página Recipes', () => {
 
     const cocoaButton = await screen.findByRole('button', { name: /Cocoa/i });
     expect(cocoaButton).toBeInTheDocument();
-  });  
+  });  main
 });
