@@ -338,7 +338,5 @@ userEvent.click(searchButton);
     userEvent.click(searchButton);
 
     expect(fetch).toHaveBeenLastCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=Apple Karate')
-
   });
-
 });
