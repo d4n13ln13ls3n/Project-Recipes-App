@@ -3,7 +3,6 @@ import { screen } from '@testing-library/react';
 import renderWithRouter from '../utils/renderWithRouter';
 import userEvent from '@testing-library/user-event';
 import Recipes from '../components/Recipes';
-import Header from '../components/Header'
 
 const apiResponseMock = {
   "meals":[

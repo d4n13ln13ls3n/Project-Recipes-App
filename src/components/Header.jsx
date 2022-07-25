@@ -63,7 +63,6 @@ export default function Header({ setFilteredRecipe, page }) {
             />
           </div>
         )
-
       }
       <FilterButtons />
     </header>
@@ -71,6 +70,11 @@ export default function Header({ setFilteredRecipe, page }) {
 }
 
 Header.propTypes = {
-  setFilteredRecipe: PropTypes.func.isRequired,
-  page: PropTypes.string.isRequired,
+  setFilteredRecipe: PropTypes.func,
+  page: PropTypes.string,
+};
+
+Header.defaultProps = {
+  setFilteredRecipe: () => null,
+  page: '',
 };

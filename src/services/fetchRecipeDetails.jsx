@@ -1,5 +1,5 @@
 export default async function apiRecipeDetails(id, pathname) {
-  if (pathname === `/foods/${id}`) {
+  if (pathname.includes('foods')) {
     const receita = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
     const response = await fetch(receita);
     const { meals } = await response.json();
@@ -10,4 +10,8 @@ export default async function apiRecipeDetails(id, pathname) {
     const { drinks } = await response.json();
     return drinks[0];
   }
+  const receita = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+  const response = await fetch(receita);
+  const { drinks } = await response.json();
+  return drinks;
 }
