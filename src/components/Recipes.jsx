@@ -4,6 +4,7 @@ import Loading from './Loading';
 import '../css/Recipes.css';
 
 export default function Recipes({ filteredRecipe, id, name, thumb }) {
+  console.log('filtered recipe:', filteredRecipe);
   return (
     <main className="recipeContainer">
       {
