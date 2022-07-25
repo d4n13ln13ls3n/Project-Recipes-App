@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react';
 import renderWithRouter from '../utils/renderWithRouter';
 import userEvent from '@testing-library/user-event';
 
-describe.only('Testa o componente Header', () => {
+describe('Testa o componente Header', () => {
   test('1. Se o ícone de perfil aparece na tela e redireciona para a página profile', async () => {
     const { history } = renderWithRouter(<Header />);
     const profileIcon = await screen.getByTestId('profile-top-btn');
@@ -53,6 +53,11 @@ describe.only('Testa o componente Header', () => {
 
     const h1FavoriteRecipes = await screen.findByRole('heading', { level: 1});
     expect(h1FavoriteRecipes).toBeInTheDocument();
+
+    history.push('/xablau');
+
+    const h1FavoriteRecipes2 = await screen.findByText(/favorite/i);
+    expect(h1FavoriteRecipes2).not.toBeInTheDocument();
   });
   
    test('4. Se o ícone de busca aparece somente nos locais corretos', async () => {
