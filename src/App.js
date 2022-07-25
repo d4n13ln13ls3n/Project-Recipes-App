@@ -23,6 +23,7 @@ function App() {
         <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
         <Route exact path="/foods/:id" component={ RecipeDetails } />
         <Route exact path="/drinks/:id" component={ RecipeDetails } />
+        <Route exact path="/recipes" component={ Recipes } />
       </Provider>
     </Switch>
   );
