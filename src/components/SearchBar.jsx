@@ -63,7 +63,7 @@ export default function SearchBar({ setFilteredRecipe }) {
     }
   };
 
-  const handleSearch = async () => {
+  const handleSearch = () => {
     // está passando o valor do state local (selectedFilters) para o state do context (global)
     setSavedFilters(selectedFilters);
   };
