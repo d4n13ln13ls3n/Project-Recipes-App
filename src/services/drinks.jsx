@@ -1,4 +1,4 @@
-import { fetchJSON } from './fetch';
+import fetchJSON from './fetch';
 
 async function search(searchText) {
   const endpoint = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchText}`;
