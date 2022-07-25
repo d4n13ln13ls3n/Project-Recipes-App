@@ -45,7 +45,7 @@ describe.only('Testa a página Recipes', () => {
     expect(cocoaButton).toBeInTheDocument();
   });
 
-  test('3. Se ao clicar no botão BEEF as 12 primeiras receitas desta categoria são retornadas, async () => {
+  test('3. Se ao clicar no botão BEEF as 12 primeiras receitas desta categoria são retornadas', async () => {
     const { history } = renderWithRouter(<App />);
     history.push('/drinks');
 
@@ -60,4 +60,5 @@ describe.only('Testa a página Recipes', () => {
     const images = await screen.findAllByRole('img');
     expect(images).toHaveLength(12);
   });
+
 });
