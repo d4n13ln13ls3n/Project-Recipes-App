@@ -1,6 +1,20 @@
 .footer {
+  align-items: center;
+  background-color: blueviolet;
   bottom: 0;
+  display: flex;
+  height: 4rem;
+  justify-content: space-around;
   left: 0;
   position: fixed;
   width: 100%;
+}
+
+.footer > a > img {
+  filter: invert(100%)
+    sepia(34%)
+    saturate(146%)
+    hue-rotate(328deg)
+    brightness(110%)
+    contrast(100%);
 }

@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import shareIcon from '../images/shareIcon.svg';
 import favoriteIcon from '../images/blackHeartIcon.svg';
 
@@ -96,3 +97,8 @@ export default function FavoriteRecipeContainer({ recipe, index }) {
     </div>
   );
 }
+
+FavoriteRecipeContainer.propTypes = {
+  recipe: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
+};

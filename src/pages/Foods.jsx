@@ -32,7 +32,7 @@ export default function Foods() {
   }, []);
 
   return (
-    <div>
+    <>
       <Header setFilteredRecipe={ setFilteredFoods } />
       <MapRecipes
         filteredRecipe={ filteredFoods }
@@ -41,6 +41,6 @@ export default function Foods() {
         thumb="strMealThumb"
       />
       <Footer />
-    </div>
+    </>
   );
 }
