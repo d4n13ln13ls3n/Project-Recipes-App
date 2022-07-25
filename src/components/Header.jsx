@@ -1,25 +1,19 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
-import { useHistory } from 'react-router';
+import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import PropTypes from 'prop-types';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import SearchBar from './SearchBar';
+import '../css/Header.css';
+import FilterButtons from './FilterButtons';
 
-function Header() {
+export default function Header({ setFilteredRecipe, page }) {
+  const [isVisible, setIsVisible] = useState(false);
   const history = useHistory();
-  const { location: { pathname } } = history;
-  const [showSearchBar, setShowSearchBar] = useState(false);
-
-  const searchBar = () => {
-    if (!showSearchBar) {
-      setShowSearchBar(true);
-    } else {
-      setShowSearchBar(false);
-    }
-  };
 
   const titleSearchBar = () => {
-    switch (history.location.pathname) {
+    const { location: { pathname } } = history;
+    switch (pathname) {
     case '/foods':
       return <h1 data-testid="page-title">Foods</h1>;
     case '/drinks':
@@ -37,29 +31,50 @@ function Header() {
 
   return (
     <header>
-      <Link to="/profile">
-        <img
-          data-testid="profile-top-btn"
-          alt="profile"
-          src={ profileIcon }
-        />
-      </Link>
-      <div>
-        { titleSearchBar() }
-      </div>
-      { (pathname === '/foods' || pathname === '/drinks')
-        && (
+      <div className="header">
+        <Link to="/profile">
           <button
             type="button"
-            data-testid="search-top-btn"
-            onClick={ searchBar }
+            data-testid="profile-top-btn"
+            src={ profileIcon }
           >
-            <img src={ searchIcon } alt="search" />
-            {' '}
-          </button>)}
-      { showSearchBar && <SearchBar />}
+            <img src={ profileIcon } alt="profile" />
+          </button>
+        </Link>
+        { titleSearchBar() }
+        {
+          page !== 'profile' && page !== 'doneRecipes' && page !== 'favoriteRecipes' && (
+            <button
+              type="button"
+              data-testid="search-top-btn"
+              onClick={ () => setIsVisible((prevState) => !prevState) }
+              src={ searchIcon }
+            >
+              <img src={ searchIcon } alt="search" />
+            </button>
+          )
+        }
+      </div>
+      {
+        isVisible && (
+          <div className="headerFilters">
+            <SearchBar
+              setFilteredRecipe={ setFilteredRecipe }
+            />
+          </div>
+        )
+      }
+      <FilterButtons />
     </header>
   );
 }
 
-export default Header;
+Header.propTypes = {
+  setFilteredRecipe: PropTypes.func,
+  page: PropTypes.string,
+};
+
+Header.defaultProps = {
+  setFilteredRecipe: () => null,
+  page: '',
+};

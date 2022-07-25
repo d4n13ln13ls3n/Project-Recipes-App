@@ -9,5 +9,5 @@ export default function useFilter(foods, drinks, { recipesLimit }) {
     setFilteredDrinks(drinks.slice(0, recipesLimit));
   }, [foods, drinks, recipesLimit]);
 
-  return [filteredFoods, filteredDrinks];
+  return [filteredFoods, filteredDrinks, setFilteredFoods, setFilteredDrinks];
 }

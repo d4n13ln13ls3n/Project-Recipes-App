@@ -1,140 +1,173 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-import React, { useEffect, useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router';
+import recipesAppContext from '../context/RecipesAppContext';
 import searchIcon from '../images/searchIcon.svg';
 import { useHistory } from 'react-router';
 
-function SearchBar() {
+export default function SearchBar({ setFilteredRecipe }) {
   const history = useHistory();
   const { location: { pathname } } = history;
-  const [searchInput, setSearchInput] = useState('');
-  const [radioSelected, setRadioSelected] = useState('');
-  const [filteredMeals, setFilteredMeals] = useState([]);
 
-  const onInputChange = ({ target: { value } }) => {
-    setSearchInput(value);
+  const initialSelectedFilters = {
+    filterBySearch: '',
+    filterByRadio: '',
+  };
+
+  // salva nesse componente de maneira local os filtros selecionados
+  const [selectedFilters, setSelectedFilters] = useState(initialSelectedFilters);
+
+  const {
+    savedFilters,
+    setSavedFilters,
+    endPoints,
+  } = useContext(recipesAppContext);
+
+  const handleInputChange = ({ target: { value } }) => {
+    setSelectedFilters((prevState) => ({ ...prevState, filterBySearch: value }));
   };
 
   const handleRadioChange = ({ target: { value } }) => {
-    setRadioSelected(value);
+    setSelectedFilters((prevState) => ({ ...prevState, filterByRadio: value }));
   };
 
-  const filteredSearch = async () => {
-    console.log('testando a função');
-
-    if (pathname === '/foods') {
-      if (radioSelected === 'ingredient') {
-        console.log('entrou no primeiro if');
-        const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`;
-        const response = await fetch(INGREDIENT_API);
-        const data = await response.json();
-        setFilteredMeals((prevState) => ({ ...prevState, data }));
-        return filteredMeals;
-      }
-      if (radioSelected === 'name') {
-        const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`;
-        const response = await fetch(INGREDIENT_API);
-        const data = await response.json();
-        setFilteredMeals(data);
-        return filteredMeals;
-      }
-      if (radioSelected === 'first-letter' && searchInput.length === 1) {
-        const INGREDIENT_API = `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchInput}`;
-        const response = await fetch(INGREDIENT_API);
-        const data = await response.json();
-        setFilteredMeals(data);
-        return filteredMeals;
-      }
-      global.alert('Your search must have only 1 (one) character');
-      return filteredMeals;
-      }
-    }
-    if (pathname === '/drinks') {
-      if (radioSelected === 'ingredient') {
-        console.log('entrou no primeiro if');
-        const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${searchInput}`;
-        const response = await fetch(INGREDIENT_API);
-        const data = await response.json();
-        setFilteredMeals((prevState) => ({ ...prevState, data }));
-        return filteredMeals;
-      }
-      if (radioSelected === 'name') {
-        const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchInput}`;
-        const response = await fetch(INGREDIENT_API);
-        const data = await response.json();
-        setFilteredMeals(data);
-        return filteredMeals;
-      }
-      if (radioSelected === 'first-letter' && searchInput.length === 1) {
-        const INGREDIENT_API = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${searchInput}`;
-        const response = await fetch(INGREDIENT_API);
-        const data = await response.json();
-        setFilteredMeals(data);
-        return filteredMeals;
-      }
-      global.alert('Your search must have only 1 (one) character');
-      return filteredMeals;
-      }
+  const checkLengthMeals = (data) => {
+    if (data.meals.length === 1 && pathname === '/foods') {
+      history.push(`${pathname}/${data.meals[0].idMeal}`);
     }
   };
 
-  useEffect(() => { // mostra resultado depois de atualizar
-    console.log('filtered meals:', filteredMeals);
-  }, [filteredMeals]);
+  const checkLengthDrinks = (data) => {
+    if (data.drinks.length === 1 && pathname === '/drinks') {
+      history.push(`${pathname}/${data.drinks[0].idDrink}`);
+    }
+  };
+
+  const noMatchMessage = 'Sorry, we haven\'t found any recipes for these filters.';
+
+  const getJsonData = async (endpoint) => {
+    const maxLimit = 12;
+    try {
+      const response = await fetch(endpoint);
+      const data = await response.json();
+      if (data.meals) {
+        checkLengthMeals(data);
+        return data.meals.filter((_, index) => index < maxLimit);
+      }
+      if (data.drinks) {
+        checkLengthDrinks(data);
+        return data.drinks.filter((_, index) => index < maxLimit);
+      }
+      return null;
+    } catch (err) {
+      console.log('error', err);
+    }
+  };
+
+  const handleSearch = () => {
+    // está passando o valor do state local (selectedFilters) para o state do context (global)
+    setSavedFilters(selectedFilters);
+  };
+
+  const filterByIngredient = async () => {
+    const data = await getJsonData(endPoints.endpoint1);
+    if (!data) {
+      return global.alert(noMatchMessage);
+    }
+    return setFilteredRecipe(data);
+  };
+
+  const filterByName = async () => {
+    const data = await getJsonData(endPoints.endpoint2);
+    if (!data) {
+      return global.alert(noMatchMessage);
+    }
+    return setFilteredRecipe(data);
+  };
+
+  const filterByFirstLetter = async () => {
+    const data = await getJsonData(endPoints.endpoint3);
+    if (!data) {
+      return global.alert(noMatchMessage);
+    }
+    return setFilteredRecipe(data);
+  };
+
+  useEffect(() => {
+    const callBack = async () => {
+      const { filterByRadio, filterBySearch } = selectedFilters;
+      if (savedFilters.filterBySearch && filterByRadio === 'ingredient') {
+        return filterByIngredient();
+      }
+
+      if (savedFilters.filterBySearch && filterByRadio === 'name') {
+        return filterByName();
+      }
+
+      if (savedFilters.filterBySearch
+          && filterByRadio === 'first-letter' && filterBySearch.length > 1) {
+        global.alert('Your search must have only 1 (one) character');
+      }
+      return filterByFirstLetter();
+    };
+    callBack();
+  }, [endPoints]);
 
   return (
-    <div>
-      <form>
-        <label htmlFor="search-input">
-          <input
-            data-testid="search-input"
-            name="search-input"
-            onChange={ onInputChange }
-            value={ searchInput }
-          />
-        </label>
-        <button
-          type="button"
-          data-testid="exec-search-btn"
-          onClick={ () => filteredSearch() }
-        >
-          <img src={ searchIcon } alt="search" />
-        </button>
-        <label htmlFor="ingredient" name="ingredient">
-          <input
-            type="radio"
-            id="ingredient"
-            name="search-radio"
-            data-testid="ingredient-search-radio"
-            onChange={ handleRadioChange }
-            value="ingredient"
-          />
-          Ingredient
-        </label>
-        <label htmlFor="name" name="name">
-          <input
-            type="radio"
-            name="search-radio"
-            id="name"
-            data-testid="name-search-radio"
-            onChange={ handleRadioChange }
-            value="name"
-          />
-          Name
-        </label>
-        <label htmlFor="first-letter" name="first-letter">
-          <input
-            type="radio"
-            name="search-radio"
-            id="first-letter"
-            data-testid="first-letter-search-radio"
-            onChange={ handleRadioChange }
-            value="first-letter"
-          />
-          First Letter
-        </label>
-      </form>
-    </div>
+    <>
+      <label htmlFor="search-input">
+        <input
+          data-testid="search-input"
+          name="search-input"
+          onChange={ handleInputChange }
+          value={ selectedFilters.filterBySearch }
+        />
+      </label>
+      <label htmlFor="ingredient" name="ingredient">
+        <input
+          type="radio"
+          id="ingredient"
+          name="search-radio"
+          data-testid="ingredient-search-radio"
+          onChange={ handleRadioChange }
+          value="ingredient"
+        />
+        Ingredient
+      </label>
+      <label htmlFor="name" name="name">
+        <input
+          type="radio"
+          name="search-radio"
+          id="name"
+          data-testid="name-search-radio"
+          onChange={ handleRadioChange }
+          value="name"
+        />
+        Name
+      </label>
+      <label htmlFor="first-letter" name="first-letter">
+        <input
+          type="radio"
+          name="search-radio"
+          id="first-letter"
+          data-testid="first-letter-search-radio"
+          onChange={ handleRadioChange }
+          value="first-letter"
+        />
+        First Letter
+      </label>
+      <button
+        type="button"
+        data-testid="exec-search-btn"
+        onClick={ handleSearch }
+      >
+        <img src={ searchIcon } alt="search" />
+        <span>Fazer busca</span>
+      </button>
+    </>
   );
 }
 
-export default SearchBar;
+SearchBar.propTypes = {
+  setFilteredRecipe: PropTypes.func.isRequired,
+};

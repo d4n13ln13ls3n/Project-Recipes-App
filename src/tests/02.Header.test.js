@@ -4,10 +4,10 @@ import { screen } from '@testing-library/react';
 import renderWithRouter from '../utils/renderWithRouter';
 import userEvent from '@testing-library/user-event';
 
-describe('Testa o componente Header', () => {
-  test('1. Se o ícone de perfil aparece na tela e redireciona para a página profile', () => {
+describe.only('Testa o componente Header', () => {
+  test('1. Se o ícone de perfil aparece na tela e redireciona para a página profile', async () => {
     const { history } = renderWithRouter(<Header />);
-    const profileIcon = screen.getByTestId('profile-top-btn');
+    const profileIcon = await screen.getByTestId('profile-top-btn');
     expect(profileIcon).toBeInTheDocument();
     userEvent.click(profileIcon);
     expect(history.location.pathname).toBe('/profile');
@@ -27,7 +27,7 @@ describe('Testa o componente Header', () => {
     expect(searchIcon2).toBeInTheDocument();
   });
 
-  test('3. Se os títulos aparecem de forma correta', async () => {
+  test.only('3. Se os títulos aparecem de forma correta', async () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
     
@@ -46,12 +46,12 @@ describe('Testa o componente Header', () => {
 
     history.push('/done-recipes');
 
-    const h1DoneRecipes = await screen.findByText(/done recipes/i);
+    const h1DoneRecipes = await screen.findByText(/done/i);
     expect(h1DoneRecipes).toBeInTheDocument();
 
     history.push('/favorite-recipes');
 
-    const h1FavoriteRecipes = await screen.findByText(/favorite recipes/i);
+    const h1FavoriteRecipes = await screen.findByText(/favorite/i);
     expect(h1FavoriteRecipes).toBeInTheDocument();
   });
   
@@ -73,7 +73,7 @@ describe('Testa o componente Header', () => {
 
     history.push('/foods')
 
-    const button = await screen.findByRole('button')
+    const button = await screen.findByTestId('search-top-btn')
     expect(button).toBeInTheDocument();
 
     userEvent.click(button)
@@ -83,5 +83,7 @@ describe('Testa o componente Header', () => {
     userEvent.click(button)
     expect(searchInput).not.toBeInTheDocument();
   });
+
+  
 
 });
