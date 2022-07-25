@@ -6,17 +6,24 @@ import '../css/Footer.css';
 
 export default function Footer() {
   return (
-    <div data-testid="footer" className="footer">
+    <footer
+      data-testid="footer"
+      className="footer"
+    >
       <Link to="/foods">
-        <button type="button">
-          <img src={ mealIcon } data-testid="food-bottom-btn" alt="drinks-bottom" />
-        </button>
+        <img
+          src={ mealIcon }
+          data-testid="food-bottom-btn"
+          alt="drinks-bottom"
+        />
       </Link>
       <Link to="/drinks">
-        <button type="button">
-          <img src={ drinkIcon } data-testid="drinks-bottom-btn" alt="drinks-bottom" />
-        </button>
+        <img
+          src={ drinkIcon }
+          data-testid="drinks-bottom-btn"
+          alt="drinks-bottom"
+        />
       </Link>
-    </div>
+    </footer>
   );
 }

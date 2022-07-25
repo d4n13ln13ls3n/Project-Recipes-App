@@ -68,13 +68,10 @@ function RecipeDetails() {
 
   useEffect(() => {
     if (recipe !== undefined) {
-      console.log(recipe);
       filterIngredient();
       filterMeasure();
     }
   }, [recipe]);
-
-  console.log(filterRecommendation);
 
   return (
     <div>
