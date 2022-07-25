@@ -1,0 +1,28 @@
+#start-recipe-btn {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+}
+
+.recommendationCards {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.recommendationImage {
+    margin: 1rem;
+    width: 11rem;
+  }
+
+.recomendations {
+    grid-column-gap: 10px;
+    grid-row-gap: 20px;
+    column-gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
+    margin: 30px 0 0;
+    overflow-x: auto;
+    row-gap: 20px; 
+}
