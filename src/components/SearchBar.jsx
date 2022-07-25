@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
+import PropTypes from 'prop-types';
 import recipesAppContext from '../context/RecipesAppContext';
 import searchIcon from '../images/searchIcon.svg';
 import { useHistory } from 'react-router';
@@ -111,6 +112,7 @@ export default function SearchBar({ setFilteredRecipe }) {
       return filterByFirstLetter();
     };
     callBack();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endPoints]);
 
   return (

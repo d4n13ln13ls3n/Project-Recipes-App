@@ -41,7 +41,7 @@ describe.only('Testa o componente Header', () => {
 
     history.push('/profile');
 
-    const h1Profile = await screen.findByText(/profile/i);
+    const h1Profile = await screen.findByRole('heading', { level: 1});
     expect(h1Profile).toBeInTheDocument();
 
     history.push('/done-recipes');
