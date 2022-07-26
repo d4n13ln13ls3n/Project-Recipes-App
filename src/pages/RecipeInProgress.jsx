@@ -54,17 +54,17 @@ export default function RecipeInProgress() {
                 data-testid="recipe-photo"
                 className="recipeCard"
                 src={ pathname === `/foods/${id.id}/in-progress`
-                  ? (recipe[0].strMealThumb) : (recipe[0].strDrinkThumb) }
+                  ? (recipe.strMealThumb) : (recipe[0].strDrinkThumb) }
                 alt={ pathname === `/foods/${id.id}/in-progress`
-                  ? (recipe[0].strMeal) : (recipe[0].strDrink) }
+                  ? (recipe.strMeal) : (recipe[0].strDrink) }
               />
               <h2 data-testid="recipe-title">
                 { pathname === `/foods/${id.id}/in-progress`
-                  ? (recipe[0].strMeal) : (recipe[0].strDrink) }
+                  ? (recipe.strMeal) : (recipe[0].strDrink) }
               </h2>
               <p data-testid="recipe-category">
                 { pathname === `/foods/${id.id}/in-progress`
-                  ? (recipe[0].strCategory)
+                  ? (recipe.strCategory)
                   : (`${recipe[0].strCategory} -- ${recipe[0].strAlcoholic}`)}
               </p>
               {
@@ -74,10 +74,9 @@ export default function RecipeInProgress() {
                   </p>
                 ))
               }
-              <p data-testid="instructions">{ recipe[0].strInstructions }</p>
+              <p data-testid="instructions">{ recipe.strInstructions }</p>
               <br />
               <button type="button">Finish Recipe</button>
-
             </div>
           ) : (
             <p>...</p>
