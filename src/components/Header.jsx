@@ -64,7 +64,7 @@ export default function Header({ setFilteredRecipe, page }) {
           </div>
         )
       }
-      <FilterButtons />
+      {history.location.pathname !== '/profile' && <FilterButtons />}
     </header>
   );
 }
