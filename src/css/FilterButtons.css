@@ -1,3 +1,21 @@
+.headerFilterButtons {
+  background-color: #efeeee;
+  display: flex;
+  justify-content: space-between;
+  overflow: auto;
+  width: 100%;
+}
+
+.headerFilterButtons > button {
+  background-color: transparent;
+  border: 0;
+  height: 4rem;
+  outline: 0;
+  padding: 0 0.8rem;
+}
+
 .selected {
-  border-bottom: 0.2rem solid red;
+  margin-bottom: -1px;
+
+  /* border-bottom: 0.2rem solid red !important; */
 }

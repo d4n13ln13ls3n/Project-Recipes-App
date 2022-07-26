@@ -81,31 +81,46 @@ function RecipeDetails() {
         && recipeMeasure !== undefined
           ? (
             <div>
-              <img
-                data-testid="recipe-photo"
-                className="recipeCard"
-                src={ pathname === `/foods/${id.id}`
-                  ? (recipe.strMealThumb) : (recipe.strDrinkThumb) }
-                alt={ pathname === `/foods/${id.id}`
-                  ? (recipe.strMeal) : (recipe.strDrink) }
-              />
-              <h2 data-testid="recipe-title">
-                { pathname === `/foods/${id.id}`
-                  ? (recipe.strMeal) : (recipe.strDrink) }
-              </h2>
-              <p data-testid="recipe-category">
-                { pathname === `/foods/${id.id}`
-                  ? (recipe.strCategory)
-                  : (`${recipe.strCategory} -- ${recipe.strAlcoholic}`)}
-              </p>
-              {
-                recipeIngredient.map((e, i) => (
-                  <p key={ `key${i}` } data-testid={ `${i}-ingredient-name-and-measure` }>
-                    { `${e} - ${recipeMeasure[i]}` }
+              <div className="detailsImgAndName">
+                <img
+                  data-testid="recipe-photo"
+                  className="recipeCard"
+                  src={ pathname === `/foods/${id.id}`
+                    ? (recipe.strMealThumb) : (recipe.strDrinkThumb) }
+                  alt={ pathname === `/foods/${id.id}`
+                    ? (recipe.strMeal) : (recipe.strDrink) }
+                />
+                <div className="detailsNameAndCategory">
+                  <h2 data-testid="recipe-title">
+                    { pathname === `/foods/${id.id}`
+                      ? (recipe.strMeal) : (recipe.strDrink) }
+                  </h2>
+                  <p data-testid="recipe-category">
+                    { pathname === `/foods/${id.id}`
+                      ? (recipe.strCategory)
+                      : (`${recipe.strCategory} -- ${recipe.strAlcoholic}`)}
                   </p>
-                ))
-              }
-              <p data-testid="instructions">{ recipe.strInstructions }</p>
+                </div>
+              </div>
+              <div className="detailsIngredientsContainer">
+                {
+                  recipeIngredient.map((e, i) => (
+                    <p
+                      key={ `key${i}` }
+                      className="detailsIngredients"
+                      data-testid={ `${i}-ingredient-name-and-measure` }
+                    >
+                      { `${e} - ${recipeMeasure[i]}` }
+                    </p>
+                  ))
+                }
+              </div>
+              <p
+                data-testid="instructions"
+                className="detailsInstructions"
+              >
+                { recipe.strInstructions }
+              </p>
               { pathname === `/foods/${id.id}`
                 && (
                   <iframe
@@ -148,7 +163,7 @@ function RecipeDetails() {
               <button
                 type="button"
                 data-testid="start-recipe-btn"
-                className="start-recipe-btn"
+                className="detailsStartRecipe"
                 // onClick={ history.push('/recipe-in-progress') }
               >
                 Start Recipe
