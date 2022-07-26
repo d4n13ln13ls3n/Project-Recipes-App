@@ -19,8 +19,11 @@
   text-align: center;
 }
 
+.loginForm {
+  width: 16rem;
+}
+
 .loginInput {
-  align-items: center;
   background-color: white;
   border-radius: 0.2rem;
   display: flex;
@@ -30,6 +33,7 @@
 .loginInput > input {
   border: 0;
   outline: 0;
+  overflow: auto;
 }
 
 .loginInput > img {
