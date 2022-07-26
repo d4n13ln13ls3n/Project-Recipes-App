@@ -70,11 +70,11 @@ export default function Header({ setFilteredRecipe, page }) {
 }
 
 Header.propTypes = {
-  setFilteredRecipe: PropTypes.func,
+  setFilteredRecipe: PropTypes.func.isRequired,
   page: PropTypes.string,
 };
 
 Header.defaultProps = {
-  setFilteredRecipe: () => null,
+  // setFilteredRecipe: () => null,
   page: '',
 };
