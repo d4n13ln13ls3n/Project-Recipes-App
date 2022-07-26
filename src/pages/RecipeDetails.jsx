@@ -14,6 +14,7 @@ function RecipeDetails() {
   const [recommendationFood, setRecommendationFood] = useState([]);
   const [recommendationDrinks, setRecommendationDrinks] = useState([]);
   const [filterRecommendation, setFilterRecommendation] = useState([]);
+  const [inProgress, setInProgress] = useState({});
   const history = useHistory();
   const { location: { pathname } } = history;
   const id = useParams();
@@ -75,9 +76,18 @@ function RecipeDetails() {
 
   const startRecipe = () => {
     if (pathname === `/foods/${id.id}`) {
+      const recipeToSave = { meals:
+        { [id.id]: recipeIngredient },
+      cocktails: { [id.id]: recipeIngredient },
+      };
+      setInProgress(recipeToSave);
+      console.log(inProgress);
+      localStorage.setItem('inProgressRecipes', JSON.stringify(inProgress));
       return history.push(`/foods/${id.id}/in-progress`);
     }
     if (pathname === `/drinks/${id.id}`) {
+      const recipeToSave = { cocktails: { [id.id]: recipeIngredient } };
+      localStorage.setItem('inProgressRecipes', JSON.stringify(recipeToSave));
       return history.push(`/drinks/${id.id}/in-progress`);
     }
   };
