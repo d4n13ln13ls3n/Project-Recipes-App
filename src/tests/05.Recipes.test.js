@@ -67,7 +67,6 @@ import Recipes from '../components/Recipes';
 
     const cocoaButton = await screen.findByRole('button', { name: /Cocoa/i });
     expect(cocoaButton).toBeInTheDocument();
-  });  
   
   test('3. Se ao clicar no botão BEEF as 12 primeiras receitas desta categoria são retornadas', async () => {
     const { history, debug } = renderWithRouter(<App />);
@@ -83,8 +82,8 @@ import Recipes from '../components/Recipes';
     const bigMac = await screen.findByText(/big mac/i);
     expect(bigMac).toBeInTheDocument();
 
-    const images = await screen.findAllByRole('heading', { level: 3 });
-    expect(images).toHaveLength(12);
+    const headings = await screen.findAllByRole('heading', { level: 3 });
+    expect(headings).toHaveLength(12);
   });
 
 });
