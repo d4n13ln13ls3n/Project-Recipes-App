@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 function Profile() {
+  const history = useHistory();
   // const { email } = JSON.parse(localStorage.getItem('user')); ANTES
   const { email } = JSON.parse(localStorage.getItem('user')) || { email: '' }; // DEṔOIS
 
@@ -14,6 +16,7 @@ function Profile() {
     localStorage.removeItem('doneRecipes');
     localStorage.removeItem('favoriteRecipes');
     localStorage.removeItem('inProgressRecipes');
+    history.push('/');
   };
 
   return (
