@@ -64,7 +64,9 @@ export default function Header({ setFilteredRecipe, page }) {
           </div>
         )
       }
-      {history.location.pathname !== '/profile' && <FilterButtons />}
+      {history.location
+        .pathname === '/foods' || history.location
+        .pathname === '/drinks' ? <FilterButtons /> : ''}
     </header>
   );
 }
