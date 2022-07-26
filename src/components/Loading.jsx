@@ -10,6 +10,7 @@ export default function Loading() {
       src={ loadingGif }
       alt="loading"
       className="loading"
+      data-testid="loading-image"
     />
   );
 }

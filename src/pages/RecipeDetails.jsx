@@ -31,7 +31,7 @@ function RecipeDetails() {
   }, []);
 
   useEffect(() => {
-    if (recommendationDrinks !== [] || recommendationFood !== []) {
+    if (recommendationDrinks.length || recommendationFood.length) {
       if (pathname === `/foods/${id.id}`) {
         const max = 6;
         setFilterRecommendation(recommendationDrinks.filter((_, index) => index < max));
@@ -72,6 +72,15 @@ function RecipeDetails() {
       filterMeasure();
     }
   }, [recipe]);
+
+  const startRecipe = () => {
+    if (pathname === `/foods/${id.id}`) {
+      return history.push(`/foods/${id.id}/in-progress`);
+    }
+    if (pathname === `/drinks/${id.id}`) {
+      return history.push(`/drinks/${id.id}/in-progress`);
+    }
+  };
 
   return (
     <div>
@@ -163,8 +172,8 @@ function RecipeDetails() {
               <button
                 type="button"
                 data-testid="start-recipe-btn"
-                className="detailsStartRecipe"
-                // onClick={ history.push('/recipe-in-progress') }
+                className="start-recipe-btn"
+                onClick={ startRecipe }
               >
                 Start Recipe
               </button>
