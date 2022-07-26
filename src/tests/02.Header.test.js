@@ -60,7 +60,6 @@ describe('Testa o componente Header', () => {
 
     const h1FavoriteRecipes2 = await screen.findByText(/favorite/i);
     expect(h1FavoriteRecipes2).not.toBeInTheDocument();
-  
   });
   
    test('4. Se o ícone de busca aparece somente nos locais corretos', async () => {
