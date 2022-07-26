@@ -31,7 +31,7 @@ function RecipeDetails() {
   }, []);
 
   useEffect(() => {
-    if (recommendationDrinks !== [] || recommendationFood !== []) {
+    if (recommendationDrinks.length || recommendationFood.length) {
       if (pathname === `/foods/${id.id}`) {
         const max = 6;
         setFilterRecommendation(recommendationDrinks.filter((_, index) => index < max));
