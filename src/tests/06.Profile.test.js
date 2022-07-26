@@ -13,7 +13,7 @@ import Recipes from '../components/Recipes';
   // });
 
 describe('Testa a página de perfil', () => {
-  test.only('3. Se o botão Logout funciona', async () => {
+  test('3. Se o botão Logout funciona', async () => {
     const { history } = renderWithRouter(<App />);
     history.push('/profile');
 
@@ -22,7 +22,7 @@ describe('Testa a página de perfil', () => {
         removeItem: jest.fn()
       }
     });
-    
+
     const logoutButton = await screen.findByTestId('profile-logout-btn');
     expect(logoutButton).toBeInTheDocument();
 
