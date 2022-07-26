@@ -71,6 +71,9 @@ export default function Login() {
             </button>
           </Link>
         </form>
+        <Link to="/" className="loginSignUp">
+          create account (sign up) ➜
+        </Link>
       </div>
     </div>
   );

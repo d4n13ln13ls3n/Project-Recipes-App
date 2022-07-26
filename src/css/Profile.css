@@ -1,0 +1,36 @@
+.profileContainer {
+  margin: 4rem auto;
+  text-align: center;
+}
+
+.profileEmail {
+  margin: 0;
+}
+
+.profileLinks {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.profileLogout {
+  background-color: white;
+  border: 1px solid red;
+  border-radius: 0.2rem;
+  color: red;
+  height: 3rem;
+}
+
+.profileOptions {
+  align-items: center;
+  color: blueviolet;
+  display: flex;
+  margin: 0.5rem;
+  text-decoration: underline;
+}
+
+.profileOptions > img {
+  margin: 0 0.2rem 0 0;
+  width: 1rem;
+}

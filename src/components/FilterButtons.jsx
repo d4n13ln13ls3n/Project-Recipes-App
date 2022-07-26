@@ -62,7 +62,7 @@ function FilterButtons() {
   };
 
   return (
-    <div>
+    <div className="headerFilterButtons">
       <button
         type="button"
         data-testid="All-category-filter"

@@ -1,3 +1,7 @@
+a:hover {
+  text-decoration: none;
+}
+
 .recipeContainer {
   align-items: end;
   display: flex;
@@ -8,6 +12,7 @@
 }
 
 .recipeCard {
+  color: blueviolet;
   margin: 1rem;
   width: 8rem;
 }

@@ -3,6 +3,7 @@
   background-color: blueviolet;
   color: white;
   display: flex;
+  height: 3.5rem;
   justify-content: space-evenly;
 }
 

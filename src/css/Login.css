@@ -1,7 +1,7 @@
 .loginContainer {
   background-color: blueviolet;
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .loginIcon {
@@ -55,4 +55,8 @@
   background-color: lightgray;
   border: 1px solid gray;
   color: gray;
+}
+
+.loginSignUp {
+  color: white;
 }

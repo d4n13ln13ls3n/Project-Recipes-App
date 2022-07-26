@@ -1,8 +1,29 @@
-.start-recipe-btn {
-  bottom: 0;
-  left: 0;
-  position: fixed;
-  right: 0;
+.detailsImgAndName {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.detailsNameAndCategory {
+  text-align: center;
+}
+
+.detailsIngredientsContainer {
+  height: 20rem;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.detailsIngredients {
+  width: 8rem;
+}
+
+.detailsInstructions {
+  margin: 4rem 2rem;
 }
 
 .recommendationCards {
@@ -20,7 +41,18 @@
   column-gap: 10px;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  margin: 30px 0 0;
+  margin: 3rem 0;
   overflow-x: auto;
   row-gap: 20px;
+}
+
+.detailsStartRecipe {
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  padding: 1rem;
+  border: 0;
+  color: white;
+  background-color: blueviolet;
 }
