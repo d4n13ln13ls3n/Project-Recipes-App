@@ -73,6 +73,15 @@ function RecipeDetails() {
     }
   }, [recipe]);
 
+  const startRecipe = () => {
+    if (pathname === `/foods/${id.id}`) {
+      return history.push(`/foods/${id.id}/in-progress`);
+    }
+    if (pathname === `/drinks/${id.id}`) {
+      return history.push(`/drinks/${id.id}/in-progress`);
+    }
+  };
+
   return (
     <div>
       {
@@ -149,7 +158,7 @@ function RecipeDetails() {
                 type="button"
                 data-testid="start-recipe-btn"
                 className="start-recipe-btn"
-                // onClick={ history.push('/recipe-in-progress') }
+                onClick={ startRecipe }
               >
                 Start Recipe
               </button>
