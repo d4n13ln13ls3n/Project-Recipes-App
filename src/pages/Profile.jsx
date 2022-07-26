@@ -30,10 +30,11 @@ function Profile() {
         <Link to="/favorite-recipes" data-testid="profile-favorite-btn">
           Favorite Recipes
         </Link>
-        <Link to="/" data-testid="profile-logout-btn">
+        <Link to="/">
           <button
             type="button"
             onClick={ handleLogout }
+            data-testid="profile-logout-btn"
           >
             Logout
           </button>
