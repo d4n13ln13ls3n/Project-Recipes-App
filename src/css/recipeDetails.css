@@ -9,13 +9,13 @@
 }
 
 .detailsIngredientsContainer {
-  height: 20rem;
-  overflow: auto;
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  height: 20rem;
   justify-content: center;
   margin: 1rem 0;
+  overflow: auto;
 }
 
 .detailsIngredients {
@@ -47,12 +47,12 @@
 }
 
 .detailsStartRecipe {
+  background-color: blueviolet;
+  border: 0;
   bottom: 0;
+  color: white;
   left: 0;
+  padding: 1rem;
   position: fixed;
   right: 0;
-  padding: 1rem;
-  border: 0;
-  color: white;
-  background-color: blueviolet;
 }
