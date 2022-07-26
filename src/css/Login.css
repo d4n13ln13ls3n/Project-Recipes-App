@@ -1,0 +1,54 @@
+.loginContainer {
+  background-color: blueviolet;
+  display: flex;
+  height: 100vh;
+}
+
+.loginIcon {
+  width: 10rem;
+}
+
+.loginContent {
+  align-items: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 30rem;
+  justify-content: space-evenly;
+  margin: auto;
+  text-align: center;
+}
+
+.loginInput {
+  align-items: center;
+  background-color: white;
+  border-radius: 0.2rem;
+  display: flex;
+  padding: 0.4rem 0;
+}
+
+.loginInput > input {
+  border: 0;
+  outline: 0;
+}
+
+.loginInput > img {
+  margin: 0 1rem;
+  width: 1.5rem;
+}
+
+.loginButton {
+  background-color: blueviolet;
+  border: 1px solid white;
+  color: white;
+  margin: 0.5rem 0 0;
+  outline: 0;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.loginButton:disabled {
+  background-color: lightgray;
+  border: 1px solid gray;
+  color: gray;
+}

@@ -1,6 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import RecipesAppContext from '../context/RecipesAppContext';
+import '../css/Login.css';
+import iconEmail from '../images/loginEmailIcon.svg';
+import iconPassword from '../images/loginPasswordIcon.svg';
+import chefIcon from '../images/chefIcon.svg';
 
 export default function Login() {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
@@ -27,33 +31,47 @@ export default function Login() {
   };
 
   return (
-    <form>
-      <label htmlFor="email-input">
-        <input
-          type="email"
-          data-testid="email-input"
-          name="email"
-          onChange={ handleChange }
-        />
-      </label>
-      <label htmlFor="password-input">
-        <input
-          type="password"
-          data-testid="password-input"
-          name="password"
-          onChange={ handleChange }
-        />
-      </label>
-      <Link to="/foods">
-        <button
-          type="button"
-          data-testid="login-submit-btn"
-          onClick={ handleSubmit }
-          disabled={ !isActiveButton() }
-        >
-          Enter
-        </button>
-      </Link>
-    </form>
+    <div className="loginContainer">
+      <div className="loginContent">
+        <img src={ chefIcon } alt="chef icon" className="loginIcon" />
+        <h1>Login</h1>
+        <form className="loginForm">
+          <label htmlFor="email-input" className="loginInput">
+            <img src={ iconEmail } alt="email icon" />
+            <input
+              id="email-input"
+              placeholder="Your Email"
+              type="email"
+              data-testid="email-input"
+              name="email"
+              onChange={ handleChange }
+            />
+          </label>
+          <label htmlFor="password-input" className="loginInput">
+            <img src={ iconPassword } alt="password icon" />
+            <input
+              id="password-input"
+              placeholder="Your Password"
+              type="password"
+              data-testid="password-input"
+              name="password"
+              autoComplete="on"
+              onChange={ handleChange }
+            />
+          </label>
+          <Link to="/foods">
+            <button
+              type="button"
+              data-testid="login-submit-btn"
+              onClick={ handleSubmit }
+              disabled={ !isActiveButton() }
+              className="loginButton"
+            >
+              LOGIN
+            </button>
+          </Link>
+        </form>
+      </div>
+    </div>
   );
 }
