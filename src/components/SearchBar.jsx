@@ -17,7 +17,6 @@ export default function SearchBar({ setFilteredRecipe }) {
   const [selectedFilters, setSelectedFilters] = useState(initialSelectedFilters);
 
   const {
-    savedFilters,
     setSavedFilters,
     endPoints,
   } = useContext(recipesAppContext);
@@ -46,26 +45,17 @@ export default function SearchBar({ setFilteredRecipe }) {
 
   const getJsonData = async (endpoint) => {
     const maxLimit = 12;
-    try {
-      const response = await fetch(endpoint);
-      const data = await response.json();
-      if (data.meals) {
-        checkLengthMeals(data);
-        return data.meals.filter((_, index) => index < maxLimit);
-      }
-      if (data.drinks) {
-        checkLengthDrinks(data);
-        return data.drinks.filter((_, index) => index < maxLimit);
-      }
-      return null;
-    } catch (err) {
-      console.log('error', err);
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    if (data.meals) {
+      checkLengthMeals(data);
+      return data.meals.filter((_, index) => index < maxLimit);
     }
-  };
-
-  const handleSearch = () => {
-    // está passando o valor do state local (selectedFilters) para o state do context (global)
-    setSavedFilters(selectedFilters);
+    if (data.drinks) {
+      checkLengthDrinks(data);
+      return data.drinks.filter((_, index) => index < maxLimit);
+    }
+    return null;
   };
 
   const filterByIngredient = async () => {
@@ -79,6 +69,7 @@ export default function SearchBar({ setFilteredRecipe }) {
   const filterByName = async () => {
     const data = await getJsonData(endPoints.endpoint2);
     if (!data) {
+      console.log('passou');
       return global.alert(noMatchMessage);
     }
     return setFilteredRecipe(data);
@@ -95,15 +86,16 @@ export default function SearchBar({ setFilteredRecipe }) {
   useEffect(() => {
     const callBack = async () => {
       const { filterByRadio, filterBySearch } = selectedFilters;
-      if (savedFilters.filterBySearch && filterByRadio === 'ingredient') {
+      console.log(selectedFilters);
+      if (selectedFilters.filterBySearch && filterByRadio === 'ingredient') {
         return filterByIngredient();
       }
 
-      if (savedFilters.filterBySearch && filterByRadio === 'name') {
+      if (selectedFilters.filterBySearch && filterByRadio === 'name') {
         return filterByName();
       }
 
-      if (savedFilters.filterBySearch
+      if (selectedFilters.filterBySearch
           && filterByRadio === 'first-letter' && filterBySearch.length > 1) {
         global.alert('Your search must have only 1 (one) character');
       }
@@ -112,6 +104,11 @@ export default function SearchBar({ setFilteredRecipe }) {
     callBack();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endPoints]);
+
+  const handleSearch = () => {
+    // está passando o valor do state local (selectedFilters) para o state do context (global),
+    setSavedFilters(selectedFilters);
+  };
 
   return (
     <>
