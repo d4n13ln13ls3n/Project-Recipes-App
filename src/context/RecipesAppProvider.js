@@ -9,6 +9,7 @@ export default function RecipesAppProvider({ children }) {
   const [filters, setFilters] = useState({ recipesLimit: 12 });
   const [renderItems, setRenderItems] = useState(false);
   const [filterButtons, setFilterButtons] = useState([]);
+  const [inProgress, setInProgress] = useState({ cocktails: {}, meals: {} });
   const [savedFilters, setSavedFilters] = useState({
     filterBySearch: '',
     filterByRadio: '',
@@ -51,6 +52,8 @@ export default function RecipesAppProvider({ children }) {
     setEndPoints,
     filterButtons,
     setFilterButtons,
+    inProgress,
+    setInProgress,
   };
 
   return (
