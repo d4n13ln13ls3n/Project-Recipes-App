@@ -57,6 +57,7 @@
   right: 0;
 }
 
-.start-recipe.btn {
+.start-recipe-btn {
   position: fixed;
+  bottom: 0px;
 }
