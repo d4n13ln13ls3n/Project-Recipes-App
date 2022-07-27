@@ -118,6 +118,18 @@ function RecipeDetails() {
                       ? (recipe.strCategory)
                       : (`${recipe.strCategory} -- ${recipe.strAlcoholic}`)}
                   </p>
+                  <button
+                    type="button"
+                    data-testid="share-btn"
+                  >
+                    {shareIcon}
+                  </button>
+                  <button
+                    type="button"
+                    data-testid="favorite-btn"
+                  >
+                    {favoriteIconProfile}
+                  </button>
                 </div>
               </div>
               <div className="detailsIngredientsContainer">
