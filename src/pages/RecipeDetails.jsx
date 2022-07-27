@@ -7,6 +7,8 @@ import fetchDrink from '../services/fetchDrink';
 import arrayIngredientsMeasure from '../services/arrayIngredientsMeasure';
 import '../css/recipeDetails.css';
 import recipesAppContext from '../context/RecipesAppContext';
+import favoriteIconProfile from '../images/favoriteIconProfile.svg';
+import shareIcon from '../images/shareIcon.svg';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState();
