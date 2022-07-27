@@ -7,6 +7,8 @@ import fetchDrink from '../services/fetchDrink';
 import arrayIngredientsMeasure from '../services/arrayIngredientsMeasure';
 import '../css/recipeDetails.css';
 import recipesAppContext from '../context/RecipesAppContext';
+import favoriteIconProfile from '../images/favoriteIconProfile.svg';
+import shareIcon from '../images/shareIcon.svg';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState();
@@ -118,6 +120,18 @@ function RecipeDetails() {
                       ? (recipe.strCategory)
                       : (`${recipe.strCategory} -- ${recipe.strAlcoholic}`)}
                   </p>
+                  <button
+                    type="button"
+                    data-testid="share-btn"
+                  >
+                    {shareIcon}
+                  </button>
+                  <button
+                    type="button"
+                    data-testid="favorite-btn"
+                  >
+                    {favoriteIconProfile}
+                  </button>
                 </div>
               </div>
               <div className="detailsIngredientsContainer">
