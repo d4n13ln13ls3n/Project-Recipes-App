@@ -46,15 +46,22 @@ export default function SearchBar({ setFilteredRecipe }) {
   const getJsonData = async (endpoint) => {
     const maxLimit = 12;
     const response = await fetch(endpoint);
-    const data = await response.json();
-    if (data.meals) {
-      checkLengthMeals(data);
-      return data.meals.filter((_, index) => index < maxLimit);
+
+    try {
+      const data = await response.json();
+      if (data.meals) {
+        checkLengthMeals(data);
+        return data.meals.filter((_, index) => index < maxLimit);
+      }
+
+      if (data.drinks) {
+        checkLengthDrinks(data);
+        return data.drinks.filter((_, index) => index < maxLimit);
+      }
+    } catch (error) {
+      console.log('failed to parse json response', error);
     }
-    if (data.drinks) {
-      checkLengthDrinks(data);
-      return data.drinks.filter((_, index) => index < maxLimit);
-    }
+
     return null;
   };
 
@@ -86,7 +93,6 @@ export default function SearchBar({ setFilteredRecipe }) {
   useEffect(() => {
     const callBack = async () => {
       const { filterByRadio, filterBySearch } = selectedFilters;
-      console.log(selectedFilters);
       if (selectedFilters.filterBySearch && filterByRadio === 'ingredient') {
         return filterByIngredient();
       }
