@@ -23,6 +23,16 @@ function RecipeDetails() {
   const { location: { pathname } } = history;
   const id = useParams();
 
+  const copy = require('clipboard-copy');
+
+  const copyText = () => {
+    copy(history.location.pathname);
+  };
+
+  // button.addEventListener('click', function () {
+  //   copy('This is some cool text')
+  // })
+
   useEffect(() => {
     const storeRecipe = async () => {
       if (pathname === `/foods/${id.id}`) {
@@ -123,6 +133,7 @@ function RecipeDetails() {
                   <button
                     type="button"
                     data-testid="share-btn"
+                    onClick={ copyText }
                   >
                     {shareIcon}
                   </button>
