@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import fetchRecipeDetails from '../services/fetchRecipeDetails';
@@ -6,6 +6,7 @@ import fetchFood from '../services/fetchFood';
 import fetchDrink from '../services/fetchDrink';
 import arrayIngredientsMeasure from '../services/arrayIngredientsMeasure';
 import '../css/recipeDetails.css';
+import recipesAppContext from '../context/RecipesAppContext';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState();
@@ -14,6 +15,8 @@ function RecipeDetails() {
   const [recommendationFood, setRecommendationFood] = useState([]);
   const [recommendationDrinks, setRecommendationDrinks] = useState([]);
   const [filterRecommendation, setFilterRecommendation] = useState([]);
+  const { inProgress, setInProgress } = useContext(recipesAppContext);
+
   const history = useHistory();
   const { location: { pathname } } = history;
   const id = useParams();
@@ -75,9 +78,15 @@ function RecipeDetails() {
 
   const startRecipe = () => {
     if (pathname === `/foods/${id.id}`) {
+      setInProgress((prevState) => ({ ...prevState,
+        meals: { ...prevState.meals, [id.id]: recipeIngredient } }));
+      localStorage.setItem('inProgressRecipes', JSON.stringify(inProgress));
       return history.push(`/foods/${id.id}/in-progress`);
     }
     if (pathname === `/drinks/${id.id}`) {
+      setInProgress((prevState) => ({ ...prevState,
+        cocktails: { ...prevState.cocktails, [id.id]: recipeIngredient } }));
+      localStorage.setItem('inProgressRecipes', JSON.stringify(inProgress));
       return history.push(`/drinks/${id.id}/in-progress`);
     }
   };
@@ -175,7 +184,7 @@ function RecipeDetails() {
                 className="start-recipe-btn"
                 onClick={ startRecipe }
               >
-                Start Recipe
+                { inProgress.length ? 'Start Recipe' : 'Continue Recipe' }
               </button>
             </div>
           ) : (
