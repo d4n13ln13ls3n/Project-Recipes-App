@@ -10,6 +10,7 @@ export default function RecipesAppProvider({ children }) {
   const [renderItems, setRenderItems] = useState(false);
   const [filterButtons, setFilterButtons] = useState([]);
   const [inProgress, setInProgress] = useState({ cocktails: {}, meals: {} });
+  const [favorites, setFavorites] = useState([]);
   const [savedFilters, setSavedFilters] = useState({
     filterBySearch: '',
     filterByRadio: '',
@@ -54,6 +55,8 @@ export default function RecipesAppProvider({ children }) {
     setFilterButtons,
     inProgress,
     setInProgress,
+    favorites,
+    setFavorites,
   };
 
   return (
