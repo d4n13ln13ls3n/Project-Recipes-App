@@ -19,7 +19,8 @@ function RecipeDetails() {
   const [recommendationDrinks, setRecommendationDrinks] = useState([]);
   const [filterRecommendation, setFilterRecommendation] = useState([]);
   const [isCopied, setIsCopied] = useState(false);
-  const { inProgress, setInProgress } = useContext(recipesAppContext);
+  const { inProgress, setInProgress,
+    favorites, setFavorites } = useContext(recipesAppContext);
 
   const history = useHistory();
   const { location: { pathname } } = history;
@@ -29,6 +30,29 @@ function RecipeDetails() {
     copy(`http://localhost:3000${history.location.pathname}`);
     setIsCopied(true);
   };
+
+  const favoriteRecipe = () => {
+    const type = pathname === `/foods/${id.id}` ? 'food' : 'drink';
+    const isAlcoholic = pathname === `/foods/${id.id}` ? '' : recipe.strAlcoholic;
+    setFavorites((prevState) => ([...prevState, {
+      id: id.id,
+      type,
+      natyonality: recipe.strArea,
+      category: recipe.strCategory,
+      alcoholicOrNot: isAlcoholic,
+      name: recipe.strMeal,
+      image: recipe.strMealThumb,
+    }]));
+    localStorage.setItem('favoriteRecipes', JSON.stringify(favorites));
+  };
+
+  // useEffect(() => {
+  //   function saveToLocal() {
+  //     localStorage
+  //       .setItem('favoriteRecipes', JSON.stringify(favorites));
+  //   }
+  //   saveToLocal();
+  // }, [favorites]);
 
   useEffect(() => {
     const storeRecipe = async () => {
@@ -138,6 +162,7 @@ function RecipeDetails() {
                   <button
                     type="button"
                     data-testid="favorite-btn"
+                    onClick={ favoriteRecipe }
                   >
                     <img src={ favoriteIconProfile } alt="favorite-recipe" />
                   </button>
