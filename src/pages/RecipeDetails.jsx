@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router';
+import copy from 'clipboard-copy';
 import fetchRecipeDetails from '../services/fetchRecipeDetails';
 import fetchFood from '../services/fetchFood';
 import fetchDrink from '../services/fetchDrink';
@@ -17,21 +18,17 @@ function RecipeDetails() {
   const [recommendationFood, setRecommendationFood] = useState([]);
   const [recommendationDrinks, setRecommendationDrinks] = useState([]);
   const [filterRecommendation, setFilterRecommendation] = useState([]);
+  const [isCopied, setIsCopied] = useState(false);
   const { inProgress, setInProgress } = useContext(recipesAppContext);
 
   const history = useHistory();
   const { location: { pathname } } = history;
   const id = useParams();
 
-  const copy = require('clipboard-copy');
-
   const copyText = () => {
-    copy(history.location.pathname);
+    copy(`http://localhost:3000${history.location.pathname}`);
+    setIsCopied(true);
   };
-
-  // button.addEventListener('click', function () {
-  //   copy('This is some cool text')
-  // })
 
   useEffect(() => {
     const storeRecipe = async () => {
@@ -135,13 +132,14 @@ function RecipeDetails() {
                     data-testid="share-btn"
                     onClick={ copyText }
                   >
-                    {shareIcon}
+                    {isCopied
+                      ? 'Link copied!' : <img src={ shareIcon } alt="share-recipe" />}
                   </button>
                   <button
                     type="button"
                     data-testid="favorite-btn"
                   >
-                    {favoriteIconProfile}
+                    <img src={ favoriteIconProfile } alt="favorite-recipe" />
                   </button>
                 </div>
               </div>
