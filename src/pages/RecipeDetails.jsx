@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import copy from 'clipboard-copy';
 import fetchRecipeDetails from '../services/fetchRecipeDetails';
 import fetchFood from '../services/fetchFood';
 import fetchDrink from '../services/fetchDrink';
 import arrayIngredientsMeasure from '../services/arrayIngredientsMeasure';
 import '../css/recipeDetails.css';
 import recipesAppContext from '../context/RecipesAppContext';
-import { ReactComponent as ShareIcon } from '../images/shareIcon.svg';
-import { ReactComponent as WhiteHeartIcon } from '../images/whiteHeartIcon.svg';
-import { ReactComponent as BlackHeartIcon } from '../images/blackHeartIcon.svg';
+import RecipeDetailsButtons from '../components/RecipeDetailsButtons';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState();
@@ -19,40 +16,11 @@ function RecipeDetails() {
   const [recommendationFood, setRecommendationFood] = useState([]);
   const [recommendationDrinks, setRecommendationDrinks] = useState([]);
   const [filterRecommendation, setFilterRecommendation] = useState([]);
-  const [isCopied, setIsCopied] = useState(false);
-  const { inProgress, setInProgress,
-    favorites, setFavorites } = useContext(recipesAppContext);
+  const { inProgress, setInProgress } = useContext(recipesAppContext);
 
   const history = useHistory();
   const { location: { pathname } } = history;
   const params = useParams();
-
-  const copyText = () => {
-    copy(`http://localhost:3000${history.location.pathname}`);
-    setIsCopied(true);
-  };
-
-  const isFavorite = favorites.some((fr) => fr.id === params.id);
-
-  const includeFavoriteRecipe = () => {
-    const isFood = pathname === `/foods/${params.id}`;
-
-    const favoriteRecipe = {
-      id: params.id,
-      category: recipe.strCategory,
-      type: isFood ? 'food' : 'drink',
-      alcoholicOrNot: isFood ? '' : 'Alcoholic',
-      name: isFood ? recipe.strMeal : recipe.strDrink,
-      image: isFood ? recipe.strMealThumb : recipe.strDrinkThumb,
-      nationality: isFood ? recipe.strArea : '',
-    };
-
-    setFavorites((prevState) => ([...prevState, favoriteRecipe]));
-  };
-
-  const unfavoriteRecipe = () => {
-    setFavorites((prevState) => prevState.filter((fr) => fr.id !== params.id));
-  };
 
   useEffect(() => {
     const storeRecipe = async () => {
@@ -151,22 +119,7 @@ function RecipeDetails() {
                       ? (recipe.strCategory)
                       : (`${recipe.strCategory} -- ${recipe.strAlcoholic}`)}
                   </p>
-                  <button type="button" data-testid="share-btn" onClick={ copyText }>
-                    {isCopied
-                      ? 'Link copied!' : <ShareIcon id="share-icon" />}
-                  </button>
-                  <button
-                    type="button"
-                    data-testid="favorite-btn"
-                    onClick={ isFavorite ? unfavoriteRecipe : includeFavoriteRecipe }
-                  >
-                    {isFavorite
-                      ? <BlackHeartIcon id="black-heart-icon" />
-                      : <WhiteHeartIcon id="white-heart-icon" />}
-                  </button>
-                  <button type="button" onClick={ () => setFavorites([]) }>
-                    Clear state
-                  </button>
+                  <RecipeDetailsButtons />
                 </div>
               </div>
               <div className="detailsIngredientsContainer">
