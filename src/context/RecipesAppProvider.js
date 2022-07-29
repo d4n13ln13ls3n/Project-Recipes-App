@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import RecipesAppContext from './RecipesAppContext';
 import useFoodsAndDrinks from '../hooks/useFoodsAndDrinks';
 import useFilter from '../hooks/useFilter';
+import useStoredState from '../hooks/useStoredState';
 
 export default function RecipesAppProvider({ children }) {
   const [login, setLogin] = useState({ email: '', password: '' });
@@ -10,7 +11,8 @@ export default function RecipesAppProvider({ children }) {
   const [renderItems, setRenderItems] = useState(false);
   const [filterButtons, setFilterButtons] = useState([]);
   const [inProgress, setInProgress] = useState({ cocktails: {}, meals: {} });
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useStoredState('favoriteRecipes', []);
+
   const [savedFilters, setSavedFilters] = useState({
     filterBySearch: '',
     filterByRadio: '',

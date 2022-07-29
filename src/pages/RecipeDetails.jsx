@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import copy from 'clipboard-copy';
 import fetchRecipeDetails from '../services/fetchRecipeDetails';
 import fetchFood from '../services/fetchFood';
 import fetchDrink from '../services/fetchDrink';
 import arrayIngredientsMeasure from '../services/arrayIngredientsMeasure';
 import '../css/recipeDetails.css';
 import recipesAppContext from '../context/RecipesAppContext';
-import favoriteIconProfile from '../images/favoriteIconProfile.svg';
-import shareIcon from '../images/shareIcon.svg';
+import RecipeDetailsButtons from '../components/RecipeDetailsButtons';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState();
@@ -18,57 +16,27 @@ function RecipeDetails() {
   const [recommendationFood, setRecommendationFood] = useState([]);
   const [recommendationDrinks, setRecommendationDrinks] = useState([]);
   const [filterRecommendation, setFilterRecommendation] = useState([]);
-  const [isCopied, setIsCopied] = useState(false);
-  const { inProgress, setInProgress,
-    favorites, setFavorites } = useContext(recipesAppContext);
+  const { inProgress, setInProgress } = useContext(recipesAppContext);
 
   const history = useHistory();
   const { location: { pathname } } = history;
-  const id = useParams();
-
-  const copyText = () => {
-    copy(`http://localhost:3000${history.location.pathname}`);
-    setIsCopied(true);
-  };
-
-  const favoriteRecipe = () => {
-    const type = pathname === `/foods/${id.id}` ? 'food' : 'drink';
-    const isAlcoholic = pathname === `/foods/${id.id}` ? '' : recipe.strAlcoholic;
-    setFavorites((prevState) => ([...prevState, {
-      id: id.id,
-      type,
-      natyonality: recipe.strArea,
-      category: recipe.strCategory,
-      alcoholicOrNot: isAlcoholic,
-      name: recipe.strMeal,
-      image: recipe.strMealThumb,
-    }]));
-    localStorage.setItem('favoriteRecipes', JSON.stringify(favorites));
-  };
-
-  // useEffect(() => {
-  //   function saveToLocal() {
-  //     localStorage
-  //       .setItem('favoriteRecipes', JSON.stringify(favorites));
-  //   }
-  //   saveToLocal();
-  // }, [favorites]);
+  const params = useParams();
 
   useEffect(() => {
     const storeRecipe = async () => {
-      if (pathname === `/foods/${id.id}`) {
+      if (pathname === `/foods/${params.id}`) {
         setRecommendationDrinks(await fetchDrink([]));
       } else {
         setRecommendationFood(await fetchFood([]));
       }
-      setRecipe(await fetchRecipeDetails(id.id, pathname));
+      setRecipe(await fetchRecipeDetails(params.id, pathname));
     };
     storeRecipe();
   }, []);
 
   useEffect(() => {
     if (recommendationDrinks.length || recommendationFood.length) {
-      if (pathname === `/foods/${id.id}`) {
+      if (pathname === `/foods/${params.id}`) {
         const max = 6;
         setFilterRecommendation(recommendationDrinks.filter((_, index) => index < max));
       } else {
@@ -82,10 +50,10 @@ function RecipeDetails() {
     const ingredients = arrayIngredientsMeasure.ingredients.map((ingredient) => (
       recipe[ingredient]
     ));
-    const remove = ingredients.filter((ingredient) => (pathname === `/foods/${id.id}`
+    const remove = ingredients.filter((ingredient) => (pathname === `/foods/${params.id}`
       ? (ingredient !== '') : (ingredient !== null && ingredient !== undefined)));
     setRecipeIngredient(remove);
-    if (pathname === `/foods/${id.id}`) {
+    if (pathname === `/foods/${params.id}`) {
       const max = 6;
       setFilterRecommendation(recommendationDrinks.filter((_, index) => index < max));
     } else {
@@ -110,17 +78,17 @@ function RecipeDetails() {
   }, [recipe]);
 
   const startRecipe = () => {
-    if (pathname === `/foods/${id.id}`) {
+    if (pathname === `/foods/${params.id}`) {
       setInProgress((prevState) => ({ ...prevState,
-        meals: { ...prevState.meals, [id.id]: recipeIngredient } }));
+        meals: { ...prevState.meals, [params.id]: recipeIngredient } }));
       localStorage.setItem('inProgressRecipes', JSON.stringify(inProgress));
-      return history.push(`/foods/${id.id}/in-progress`);
+      return history.push(`/foods/${params.id}/in-progress`);
     }
-    if (pathname === `/drinks/${id.id}`) {
+    if (pathname === `/drinks/${params.id}`) {
       setInProgress((prevState) => ({ ...prevState,
-        cocktails: { ...prevState.cocktails, [id.id]: recipeIngredient } }));
+        cocktails: { ...prevState.cocktails, [params.id]: recipeIngredient } }));
       localStorage.setItem('inProgressRecipes', JSON.stringify(inProgress));
-      return history.push(`/drinks/${id.id}/in-progress`);
+      return history.push(`/drinks/${params.id}/in-progress`);
     }
   };
 
@@ -136,36 +104,22 @@ function RecipeDetails() {
                 <img
                   data-testid="recipe-photo"
                   className="recipeCard"
-                  src={ pathname === `/foods/${id.id}`
+                  src={ pathname === `/foods/${params.id}`
                     ? (recipe.strMealThumb) : (recipe.strDrinkThumb) }
-                  alt={ pathname === `/foods/${id.id}`
+                  alt={ pathname === `/foods/${params.id}`
                     ? (recipe.strMeal) : (recipe.strDrink) }
                 />
                 <div className="detailsNameAndCategory">
                   <h2 data-testid="recipe-title">
-                    { pathname === `/foods/${id.id}`
+                    { pathname === `/foods/${params.id}`
                       ? (recipe.strMeal) : (recipe.strDrink) }
                   </h2>
                   <p data-testid="recipe-category">
-                    { pathname === `/foods/${id.id}`
+                    { pathname === `/foods/${params.id}`
                       ? (recipe.strCategory)
                       : (`${recipe.strCategory} -- ${recipe.strAlcoholic}`)}
                   </p>
-                  <button
-                    type="button"
-                    data-testid="share-btn"
-                    onClick={ copyText }
-                  >
-                    {isCopied
-                      ? 'Link copied!' : <img src={ shareIcon } alt="share-recipe" />}
-                  </button>
-                  <button
-                    type="button"
-                    data-testid="favorite-btn"
-                    onClick={ favoriteRecipe }
-                  >
-                    <img src={ favoriteIconProfile } alt="favorite-recipe" />
-                  </button>
+                  <RecipeDetailsButtons recipe={ recipe } />
                 </div>
               </div>
               <div className="detailsIngredientsContainer">
@@ -187,7 +141,7 @@ function RecipeDetails() {
               >
                 { recipe.strInstructions }
               </p>
-              { pathname === `/foods/${id.id}`
+              { pathname === `/foods/${params.id}`
                 && (
                   <iframe
                     title="Video"
@@ -200,16 +154,16 @@ function RecipeDetails() {
                 {
                   filterRecommendation.map((e, index) => (
                     <a
-                      href={ pathname === `/foods/${id.id}`
+                      href={ pathname === `/foods/${params.id}`
                         ? (`/drinks/${e.idDrink}`) : (`/foods/${e.idMeal}`) }
                       key={ e.idDrink || e.idMeal }
                       data-testid={ `${index}-recomendation-card` }
                       className="recommendationCards"
                     >
                       <img
-                        src={ pathname === `/foods/${id.id}`
+                        src={ pathname === `/foods/${params.id}`
                           ? (e.strDrinkThumb) : (e.strMealThumb) }
-                        alt={ pathname === `/foods/${id.id}`
+                        alt={ pathname === `/foods/${params.id}`
                           ? (e.strDrink) : (e.strMeal) }
                         data-testid={ `${index}-recomendation-image` }
                         className="recommendationImage"
@@ -217,7 +171,7 @@ function RecipeDetails() {
                       <strong
                         data-testid={ `${index}-recomendation-title` }
                       >
-                        { pathname === `/foods/${id.id}`
+                        { pathname === `/foods/${params.id}`
                           ? (e.strDrink) : (e.strMeal) }
                       </strong>
                     </a>

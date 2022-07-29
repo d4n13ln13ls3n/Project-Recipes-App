@@ -1,36 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Header from '../components/Header';
 import FavoriteRecipeContainer from '../components/FavoriteRecipesContainer';
 import '../css/FavoriteRecipes.css';
+import recipesAppContext from '../context/RecipesAppContext';
 
 function FavoriteRecipes() {
-  const [recipes, setRecipes] = useState();
-  useEffect(() => {
-    // Esse initialValue é só pra simular o favoriteRecipes salvo no local storage
-    const initialValue = [
-      {
-        id: '52771',
-        type: 'food',
-        nationality: 'Italian',
-        category: 'Vegetarian',
-        alcoholicOrNot: '',
-        name: 'Spicy Arrabiata Penne',
-        image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-      },
-      {
-        id: '178319',
-        type: 'drink',
-        nationality: '',
-        category: 'Cocktail',
-        alcoholicOrNot: 'Alcoholic',
-        name: 'Aquamarine',
-        image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
-      },
-    ];
-    localStorage.setItem('favoriteRecipes', JSON.stringify(initialValue));
+  const { favorites } = useContext(recipesAppContext);
+  // const [recipes, setRecipes] = useState();
+  // useEffect(() => {
+  //   // Esse initialValue é só pra simular o favoriteRecipes salvo no local storage
+  //   const initialValue = [
+  //     {
+  //       id: '52771',
+  //       type: 'food',
+  //       nationality: 'Italian',
+  //       category: 'Vegetarian',
+  //       alcoholicOrNot: '',
+  //       name: 'Spicy Arrabiata Penne',
+  //       image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
+  //     },
+  //     {
+  //       id: '178319',
+  //       type: 'drink',
+  //       nationality: '',
+  //       category: 'Cocktail',
+  //       alcoholicOrNot: 'Alcoholic',
+  //       name: 'Aquamarine',
+  //       image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
+  //     },
+  //   ];
+  //   localStorage.setItem('favoriteRecipes', JSON.stringify(initialValue));
 
-    setRecipes(JSON.parse(localStorage.getItem('favoriteRecipes')));
-  }, []);
+  //   setRecipes(JSON.parse(localStorage.getItem('favoriteRecipes')));
+  // }, []);
   return (
     <div>
       <Header page="favoriteRecipes" />
@@ -51,8 +53,8 @@ function FavoriteRecipes() {
 
       <div>
         {
-          recipes && (
-            recipes.map((recipe, index) => (
+          favorites && (
+            favorites.map((recipe, index) => (
               <FavoriteRecipeContainer
                 key={ recipe.id }
                 recipe={ recipe }
