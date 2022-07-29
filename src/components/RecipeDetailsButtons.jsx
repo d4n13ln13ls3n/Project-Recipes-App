@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router';
+import copy from 'clipboard-copy';
 import { ReactComponent as ShareIcon } from '../images/shareIcon.svg';
 import { ReactComponent as WhiteHeartIcon } from '../images/whiteHeartIcon.svg';
 import { ReactComponent as BlackHeartIcon } from '../images/blackHeartIcon.svg';
+import recipesAppContext from '../context/RecipesAppContext';
 
 function RecipeDetailsButtons() {
   const [isCopied, setIsCopied] = useState(false);
   const { favorites, setFavorites } = useContext(recipesAppContext);
-
+  const [recipe, setRecipe] = useState();
+  
   const history = useHistory();
   const { location: { pathname } } = history;
   const params = useParams();
