@@ -119,7 +119,7 @@ function RecipeDetails() {
                       ? (recipe.strCategory)
                       : (`${recipe.strCategory} -- ${recipe.strAlcoholic}`)}
                   </p>
-                  <RecipeDetailsButtons />
+                  <RecipeDetailsButtons recipe={ recipe } />
                 </div>
               </div>
               <div className="detailsIngredientsContainer">
