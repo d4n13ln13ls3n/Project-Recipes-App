@@ -8,6 +8,7 @@ import arrayIngredientsMeasure from '../services/arrayIngredientsMeasure';
 import '../css/recipeDetails.css';
 import recipesAppContext from '../context/RecipesAppContext';
 import RecipeDetailsButtons from '../components/RecipeDetailsButtons';
+import Loading from '../components/Loading';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState();
@@ -190,7 +191,7 @@ function RecipeDetails() {
               </button>
             </div>
           ) : (
-            <p>...</p>
+            <Loading />
           )
       }
     </div>

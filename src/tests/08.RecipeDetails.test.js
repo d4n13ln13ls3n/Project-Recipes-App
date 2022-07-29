@@ -1,7 +1,19 @@
 import App from '../App';
-import { cleanup, screen } from '@testing-library/react';
+import { cleanup, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import renderWithRouter from '../utils/renderWithRouter';
 import userEvent from '@testing-library/user-event';
+
+async function waitForApiResponse() {
+  const loadingElement = await screen
+    .findByTestId("loading-image", undefined)
+    .catch(() => null);
+
+  if (!loadingElement) {
+    return;
+  }
+
+  return waitForElementToBeRemoved(() => screen.queryByTestId("loading-image"));
+}
 
 describe('Testa a página Recipe Details', () => {
   test('1. Se a página exibe o vídeo e as recomendações para Big Mac', async () => {
@@ -9,7 +21,6 @@ describe('Testa a página Recipe Details', () => {
     history.push('/foods');
 
     // const beefButton = await screen.findByRole('button', { name: /beef/i });
-    debug();
     const beefButton = await screen.findByText(/beef/i);
     expect(beefButton).toBeInTheDocument();
 
@@ -31,10 +42,9 @@ describe('Testa a página Recipe Details', () => {
   });
 
   test('2. Se a página exibe o vídeo e as recomendações para Avalanche', async () => {
-    const { history, debug } = renderWithRouter(<App />);
+    const { history } = renderWithRouter(<App />);
     history.push('/drinks');
 
-    debug();
     const shakeButton = await screen.findByText(/shake/i);
     expect(shakeButton).toBeInTheDocument();
 
