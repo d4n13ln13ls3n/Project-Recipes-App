@@ -3,13 +3,18 @@ import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import fetchRecipeDetails from '../services/fetchRecipeDetails';
 import arrayIngredientsMeasure from '../services/arrayIngredientsMeasure';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeart from '../images/whiteHeartIcon.svg';
+import blackHeart from '../images/blackHeartIcon.svg';
 
 export default function RecipeInProgress() {
+  const [appearLink, setAppearLink] = useState(false);
   const [recipe, setRecipe] = useState();
   const [recipeIngredient, setRecipeIngredient] = useState();
   const [recipeMeasure, setRecipeMeasure] = useState();
   const history = useHistory();
   const { location: { pathname } } = history;
+  const [heart, setHeart] = useState(true);
   const id = useParams();
 
   useEffect(() => {
@@ -19,29 +24,46 @@ export default function RecipeInProgress() {
     storeRecipe();
   }, []);
 
+  const shareUrl = () => {
+    const endpoint = `http://localhost:3000${pathname}`;
+    console.log(endpoint);
+    const url = navigator.clipboard.writeText(endpoint);
+    setAppearLink(true);
+
+    return url;
+  };
   function filterIngredient() {
     const ingredients = arrayIngredientsMeasure.ingredients.map((ingredient) => (
       recipe[ingredient]
     ));
-    const remove = ingredients.filter((ingredient) => (pathname === `/foods/${id.id}`
-      ? (ingredient !== '') : (ingredient !== null && ingredient !== undefined)));
+    const remove = ingredients.filter((ingredient) => (
+      ingredient !== undefined && ingredient !== null && ingredient !== ''
+    ));
     setRecipeIngredient(remove);
   }
   function filterMeasure() {
     const ingredients = arrayIngredientsMeasure.measure.map((ingredient) => (
       recipe[ingredient]
     ));
-    const remove = ingredients.filter((ingredient) => ingredient !== ' ');
+    const remove = ingredients.filter((ingredient) => (
+      ingredient !== undefined && ingredient !== null && ingredient !== ''
+    ));
     setRecipeMeasure(remove);
   }
-
+  const handleFav = () => {
+    // buttonFav();
+    // remove();
+    setHeart(!heart);
+  };
   useEffect(() => {
     if (recipe !== undefined) {
       filterIngredient();
       filterMeasure();
+      console.log(recipeMeasure);
     }
   }, [recipe]);
-
+  // console.log(recipe);
+  // console.log(recipeIngredient);
   return (
     <div>
       {
@@ -69,14 +91,41 @@ export default function RecipeInProgress() {
               </p>
               {
                 recipeIngredient.map((e, i) => (
-                  <p key={ `key${i}` } data-testid={ `${i}-ingredient-name-and-measure` }>
+                  <h4
+                    key={ `key${i}` }
+                    className="detailsIngredients"
+                    data-testid={ `${i}-ingredient-name-and-measure` }
+                  >
+                    <input
+                      type="checkbox"
+                      name="ingredient"
+                      data-testid={ `${i}-ingredient-step` }
+                    />
                     { `${e} - ${recipeMeasure[i]}` }
-                  </p>
+                  </h4>
                 ))
               }
               <p data-testid="instructions">{ recipe.strInstructions }</p>
               <br />
-              <button type="button">Finish Recipe</button>
+              <input
+                data-testid="share-btn"
+                type="image"
+                src={ shareIcon }
+                alt={ shareIcon }
+                onClick={ () => shareUrl() }
+              />
+              {appearLink && <p>Link copied!</p>}
+              <button
+                type="button"
+                onClick={ handleFav }
+              >
+                <img
+                  src={ heart ? whiteHeart : blackHeart }
+                  alt={ whiteHeart }
+                  data-testid="favorite-btn"
+                />
+              </button>
+              <button type="button" data-testid="finish-recipe-btn">Finish Recipe</button>
             </div>
           ) : (
             <p>...</p>
