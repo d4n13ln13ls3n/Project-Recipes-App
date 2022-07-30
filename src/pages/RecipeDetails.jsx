@@ -8,7 +8,7 @@ import arrayIngredientsMeasure from '../services/arrayIngredientsMeasure';
 import '../css/recipeDetails.css';
 import recipesAppContext from '../context/RecipesAppContext';
 import RecipeDetailsButtons from '../components/RecipeDetailsButtons';
-import Loading from '../components/Loading';
+// import Loading from '../components/Loading';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState();
@@ -187,14 +187,19 @@ function RecipeDetails() {
                 className="start-recipe-btn"
                 onClick={ startRecipe }
               >
-                { inProgress.length ? 'Start Recipe' : 'Continue Recipe' }
+                {/* { inProgress.length ? 'Start Recipe' : 'Continue Recipe' } */}
+                { Object.entries(inProgress)
+                  .includes(recipe.idMeal) || Object.entries(inProgress)
+                  .includes(recipe.idDrink) ? 'Continue Recipe' : 'Start Recipe' }
               </button>
             </div>
           ) : (
-            <Loading />
+            <p>Loading...</p>
           )
       }
     </div>
   );
 }
 export default RecipeDetails;
+
+// Object.values(inProgress).includes(recipe)
