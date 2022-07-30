@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router';
+import '../css/RecipeInProgress.css';
 import fetchRecipeDetails from '../services/fetchRecipeDetails';
 import arrayIngredientsMeasure from '../services/arrayIngredientsMeasure';
 import shareIcon from '../images/shareIcon.svg';
@@ -50,6 +51,37 @@ export default function RecipeInProgress() {
     ));
     setRecipeMeasure(remove);
   }
+
+  function filterIngredientDrinks() {
+    const ingredients = arrayIngredientsMeasure.ingredients.map((ingredient) => (
+      recipe[0][ingredient]
+    ));
+    const remove = ingredients.filter((ingredient) => (
+      ingredient !== undefined && ingredient !== null && ingredient !== ''
+    ));
+    setRecipeIngredient(remove);
+  }
+  function filterMeasureDrinks() {
+    const ingredients = arrayIngredientsMeasure.measure.map((ingredient) => (
+      recipe[0][ingredient]
+    ));
+    const remove = ingredients.filter((ingredient) => (
+      ingredient !== undefined && ingredient !== null && ingredient !== ''
+    ));
+    setRecipeMeasure(remove);
+  }
+
+  function compare() {
+    if (pathname.includes('foods')) {
+      filterIngredient();
+      filterMeasure();
+    }
+    if (pathname.includes('drinks')) {
+      filterIngredientDrinks();
+      filterMeasureDrinks();
+    }
+  }
+
   const handleFav = () => {
     // buttonFav();
     // remove();
@@ -57,13 +89,12 @@ export default function RecipeInProgress() {
   };
   useEffect(() => {
     if (recipe !== undefined) {
-      filterIngredient();
-      filterMeasure();
-      console.log(recipeMeasure);
+      compare();
     }
   }, [recipe]);
+  // console.log('medidas', recipeMeasure);
   // console.log(recipe);
-  // console.log(recipeIngredient);
+  // console.log('ingredientes', recipeIngredient);
   return (
     <div>
       {
@@ -89,22 +120,28 @@ export default function RecipeInProgress() {
                   ? (recipe.strCategory)
                   : (`${recipe[0].strCategory} -- ${recipe[0].strAlcoholic}`)}
               </p>
-              {
-                recipeIngredient.map((e, i) => (
-                  <h4
-                    key={ `key${i}` }
-                    className="detailsIngredients"
-                    data-testid={ `${i}-ingredient-name-and-measure` }
-                  >
-                    <input
-                      type="checkbox"
-                      name="ingredient"
-                      data-testid={ `${i}-ingredient-step` }
-                    />
-                    { `${e} - ${recipeMeasure[i]}` }
-                  </h4>
-                ))
-              }
+              <div>
+                {
+                  recipeIngredient.map((e, i) => (
+                    <div
+                      key={ `key${i}` }
+                    >
+                      <label
+                        data-testid={ `${i}-ingredient-step` }
+                        htmlFor={ `${e} - ${recipeMeasure[i]}` }
+                        className="checked"
+                      >
+                        <input
+                          type="checkbox"
+                          value={ i }
+                          name={ `${e} - ${recipeMeasure[i]}` }
+                        />
+                        { `${e} - ${recipeMeasure[i]}` }
+                      </label>
+                    </div>
+                  ))
+                }
+              </div>
               <p data-testid="instructions">{ recipe.strInstructions }</p>
               <br />
               <input
