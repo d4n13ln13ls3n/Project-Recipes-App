@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import shareIcon from '../images/shareIcon.svg';
 import favoriteIcon from '../images/blackHeartIcon.svg';
+import recipesAppContext from '../context/RecipesAppContext';
 
 export default function FavoriteRecipeContainer({ recipe, index }) {
   const {
@@ -16,29 +17,9 @@ export default function FavoriteRecipeContainer({ recipe, index }) {
     category,
   } = recipe;
 
-  const [isCopied, setIsCopied] = useState(false);
+  const { favorites, setFavorites } = useContext(recipesAppContext);
 
-  // esse array é só pra servir como mock
-  const localStorageValue = [
-    {
-      id: '52771',
-      type: 'food',
-      nationality: 'Italian',
-      category: 'Vegetarian',
-      alcoholicOrNot: '',
-      name: 'Spicy Arrabiata Penne',
-      image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-    },
-    {
-      id: '178319',
-      type: 'drink',
-      nationality: '',
-      category: 'Cocktail',
-      alcoholicOrNot: 'Alcoholic',
-      name: 'Aquamarine',
-      image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
-    },
-  ];
+  const [isCopied, setIsCopied] = useState(false);
 
   const handleShare = (location) => {
     navigator.clipboard.writeText(`http://localhost:3000${location}`);
@@ -47,10 +28,9 @@ export default function FavoriteRecipeContainer({ recipe, index }) {
 
   const handleFavorite = ({ target }) => {
     const newLocalStorageValue = (
-      localStorageValue.filter((recipes) => recipes.id !== target.id)
+      favorites.filter((recipes) => recipes.id !== target.id)
     );
-
-    console.log(newLocalStorageValue);
+    setFavorites(newLocalStorageValue);
   };
 
   return (

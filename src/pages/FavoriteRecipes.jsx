@@ -1,60 +1,71 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Header from '../components/Header';
 import FavoriteRecipeContainer from '../components/FavoriteRecipesContainer';
-import '../css/FavoriteRecipes.css';
 import recipesAppContext from '../context/RecipesAppContext';
+import '../css/FavoriteRecipes.css';
 
 function FavoriteRecipes() {
-  const { favorites } = useContext(recipesAppContext);
-  // const [recipes, setRecipes] = useState();
-  // useEffect(() => {
-  //   // Esse initialValue é só pra simular o favoriteRecipes salvo no local storage
-  //   const initialValue = [
-  //     {
-  //       id: '52771',
-  //       type: 'food',
-  //       nationality: 'Italian',
-  //       category: 'Vegetarian',
-  //       alcoholicOrNot: '',
-  //       name: 'Spicy Arrabiata Penne',
-  //       image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-  //     },
-  //     {
-  //       id: '178319',
-  //       type: 'drink',
-  //       nationality: '',
-  //       category: 'Cocktail',
-  //       alcoholicOrNot: 'Alcoholic',
-  //       name: 'Aquamarine',
-  //       image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
-  //     },
-  //   ];
-  //   localStorage.setItem('favoriteRecipes', JSON.stringify(initialValue));
+  const { favorites } = React.useContext(recipesAppContext);
 
-  //   setRecipes(JSON.parse(localStorage.getItem('favoriteRecipes')));
-  // }, []);
+  const [recipes, setRecipes] = React.useState([]);
+
+  // recupera a lista de receitas favoritas do context
+  React.useEffect(() => {
+    setRecipes(favorites);
+  }, [favorites]);
+
+  const handleRadio = ({ target: { id } }) => {
+    if (id === 'foods') {
+      const filteredFavorites = favorites.filter((favorite) => favorite.type === 'food');
+      return setRecipes(filteredFavorites);
+    }
+    if (id === 'drinks') {
+      const filteredFavorites = favorites.filter((favorite) => favorite.type === 'drink');
+      return setRecipes(filteredFavorites);
+    }
+    return setRecipes(favorites);
+  };
+
   return (
     <div>
       <Header page="favoriteRecipes" />
       <div>
         <label htmlFor="all">
-          <input type="radio" id="all" data-testid="filter-by-all-btn" />
+          <input
+            name="radioFilter"
+            defaultChecked
+            type="radio"
+            id="all"
+            data-testid="filter-by-all-btn"
+            onClick={ handleRadio }
+          />
           All
         </label>
         <label htmlFor="foods">
-          <input type="radio" id="foods" data-testid="filter-by-food-btn" />
+          <input
+            name="radioFilter"
+            type="radio"
+            id="foods"
+            data-testid="filter-by-food-btn"
+            onClick={ handleRadio }
+          />
           Foods
         </label>
         <label htmlFor="drinks">
-          <input type="radio" id="drinks" data-testid="filter-by-drink-btn" />
+          <input
+            name="radioFilter"
+            type="radio"
+            id="drinks"
+            data-testid="filter-by-drink-btn"
+            onClick={ handleRadio }
+          />
           Drinks
         </label>
       </div>
-
       <div>
         {
-          favorites && (
-            favorites.map((recipe, index) => (
+          recipes.length && (
+            recipes.map((recipe, index) => (
               <FavoriteRecipeContainer
                 key={ recipe.id }
                 recipe={ recipe }
