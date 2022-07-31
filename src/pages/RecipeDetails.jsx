@@ -8,7 +8,6 @@ import arrayIngredientsMeasure from '../services/arrayIngredientsMeasure';
 import '../css/recipeDetails.css';
 import recipesAppContext from '../context/RecipesAppContext';
 import RecipeDetailsButtons from '../components/RecipeDetailsButtons';
-// import Loading from '../components/Loading';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState();
@@ -36,12 +35,11 @@ function RecipeDetails() {
   }, []);
 
   useEffect(() => {
+    const max = 6;
     if (recommendationDrinks.length || recommendationFood.length) {
       if (pathname === `/foods/${params.id}`) {
-        const max = 6;
         setFilterRecommendation(recommendationDrinks.filter((_, index) => index < max));
       } else {
-        const max = 6;
         setFilterRecommendation(recommendationFood.filter((_, index) => index < max));
       }
     }
@@ -136,10 +134,7 @@ function RecipeDetails() {
                   ))
                 }
               </div>
-              <p
-                data-testid="instructions"
-                className="detailsInstructions"
-              >
+              <p data-testid="instructions" className="detailsInstructions">
                 { recipe.strInstructions }
               </p>
               { pathname === `/foods/${params.id}`
@@ -201,5 +196,3 @@ function RecipeDetails() {
   );
 }
 export default RecipeDetails;
-
-// Object.values(inProgress).includes(recipe)

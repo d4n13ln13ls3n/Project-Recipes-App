@@ -18,13 +18,27 @@ async function waitForApiResponse() {
 describe('Testa a página Recipe Details', () => {
   afterEach(cleanup);
   
+  test('6. Se a página de Kir exibe um máximo de 6 recomendações', async () => {
+    const { history } = renderWithRouter(<App />);
+    await waitForApiResponse();
+
+    history.push('drinks/17203');
+
+    const recommendationLinks = await screen.findAllByRole('link');
+    expect(recommendationLinks).toHaveLength(6);
+
+  });
+
    test('5. Se a página de Big Mac exibe um máximo de 6 recomendações', async () => {
     const { history } = renderWithRouter(<App />);
+    await waitForApiResponse();
+
     history.push('/foods/53013');
 
     const recommendationLinks = await screen.findAllByRole('link');
     expect(recommendationLinks).toHaveLength(6);
   });
+
   
   test('1. Se a página exibe o vídeo e as recomendações para Big Mac', async () => {
     const { history, debug } = renderWithRouter(<App />);
@@ -46,12 +60,12 @@ describe('Testa a página Recipe Details', () => {
     const video = await screen.findByTestId('video');
     expect(video).toBeInTheDocument();
 
-    const recommendation = await screen.findByTestId('0-recomendation-title');
-    expect(recommendation).toBeInTheDocument();
-
+    const recommendation0 = await screen.findByTestId('0-recomendation-title');
+    expect(recommendation0).toBeInTheDocument();
+    
     const recommendationLinks = await screen.findAllByRole('link');
     expect(recommendationLinks).toHaveLength(6);
-
+    
     expect(history.location.pathname).toBe('/foods/53013');
   });
 
