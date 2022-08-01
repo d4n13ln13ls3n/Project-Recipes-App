@@ -43,7 +43,7 @@ function RecipeDetails() {
         setFilterRecommendation(recommendationFood.filter((_, index) => index < max));
       }
     }
-  }, []);
+  }, [recommendationDrinks, recommendationFood]);
 
   function filterIngredient() {
     const ingredients = arrayIngredientsMeasure.ingredients.map((ingredient) => (
