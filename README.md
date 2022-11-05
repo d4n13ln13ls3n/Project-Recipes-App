@@ -2,7 +2,7 @@
   Projeto desenvolvido no módulo de Front-end da [Trybe](https://www.betrybe.com/).
   English below
   
-    ## ✏ Informações sobre o projeto
+  ## ✏ Informações sobre o projeto
 
 O objetivo deste projeto, que desenvolvi em grupo com João Victor Kikuti (github.com/kikutii), Almir Araújo (github.com/Almir-Araujo), Emanuel F. (githum.com/Manu-fsf e Lucas Luz (github.com/LucasMedeirosLuz), foi criar um app no qual é possível: ver, buscar, filtrar, favoritar e acompanhar o progresso de preparação de receitas e drinks! O layout teve como foco dispositivos móveis, de forma que todos os protótipos vão estar desenvolvidos em telas menores. A base de dados serão 2 APIs distintas, uma para comidas e outra para bebidas.
 
